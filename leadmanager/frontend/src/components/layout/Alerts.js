@@ -15,14 +15,21 @@ const Alerts = (props) => {
         if (error.msg.name) {
             // name property is an array
             // join to convert the message into a string
-            alert.error(`Name: ${props.error.msg.name.join()}`);
+            alert.error(`Name: ${error.msg.name.join()}`);
         }
         if (error.msg.email) {
-            alert.error(`Email: ${props.error.msg.email.join()}`);
+            alert.error(`Email: ${error.msg.email.join()}`);
         }
         if (error.msg.message) {
-            alert.error(`Message: ${props.error.msg.message.join()}`);
+            alert.error(`Message: ${error.msg.message.join()}`);
         }
+        if (error.msg.non_field_errors) {
+            alert.error(error.msg.non_field_errors.join());
+        }
+        if (error.msg.username) {
+            alert.error(error.msg.username.join());
+        }
+
     }, [props.error]);
 
     useEffect(() => {
@@ -33,6 +40,9 @@ const Alerts = (props) => {
             }
             if (message.addLead) {
                 alert.success(message.addLead);
+            }
+            if (message.passwordsDoNotMatch) {
+                alert.error(message.passwordsDoNotMatch);
             }
         }
     }), [props.message];
