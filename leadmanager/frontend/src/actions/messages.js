@@ -1,4 +1,4 @@
-import { CREATE_MESSAGE } from "./types";
+import { CREATE_MESSAGE, GET_ERRORS } from "./types";
 
 export const createMessage = msg => {
     // dispatch the message to reducer
@@ -7,3 +7,11 @@ export const createMessage = msg => {
         payload: msg
     };
 };
+
+// action to return errors
+export const returnErrors = (msg, status) => {
+    return {
+        type: GET_ERRORS,
+        payload: { msg, status }
+    }
+}
