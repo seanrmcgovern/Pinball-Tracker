@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Form from './Form';
 import Leads from './Leads';
+import SearchBar from './SearchBar';
 import PinballMap from './PinballMap';
 import Drawer from './Drawer';
 
@@ -14,12 +15,13 @@ const Dashboard = () => {
 
     return (
         <div>
+            <SearchBar/>
             <div style={{display: "flex"}}>
                 <Drawer isVisible={isVisible} toggleDrawer={toggleDrawer}/>
                 <PinballMap isVisible={isVisible} toggleDrawer={toggleDrawer}/>
             </div>
-            <Form />
-            <Leads />
+            {/* <Form />
+            <Leads /> */}
             <footer>
                 <div className="navbar navbar-inverse navbar-static-bottom" role="navigation">
                     <div className="navbar-text pull-left">
