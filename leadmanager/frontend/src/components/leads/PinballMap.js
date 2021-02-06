@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'; 
 import { getMachinesByAddress } from  '../../actions/machines';
 import ReactMapboxGl, { Layer, Feature, Marker, ZoomControl } from 'react-mapbox-gl';
@@ -22,22 +22,34 @@ const PinballMap = (props) => {
     };
 
     const onPress = (e) => {
-        console.log("heloleleoleoe")
         e.preventDefault();
         props.toggleDrawer();
     }
 
+    const [center, setCenter] = useState([-78.476677, 38.029305]);
+
+    useEffect(() => {
+        if (props.machines?.locations) {
+            const average = arr => arr.reduce((sum, cur) => sum + cur, 0) / arr.length;
+            const lats = props.machines.locations.map(m => parseFloat(m.lat));
+            const lons = props.machines.locations.map(m => parseFloat(m.lon));
+            const averageLon = average(lons);
+            const averageLat = average(lats);
+            setCenter([averageLon, averageLat]);
+        }
+    }, [props.machines]);
+    
     return (
         <Map 
             // style="mapbox://styles/seanmcgovern/ckklq8nd640rm17s5ufcl9gp2"
             style="mapbox://styles/mapbox/streets-v9"
             // style="mapbox://styles/mapbox/light-v10"
             containerStyle={{
-                height: '100vh',
+                height: '85vh',
                 width: '100%',
                 flex: 1, 
             }}
-            center={[-78.476677, 38.029305]}
+            center={center}
             onStyleLoad={handleStyleLoad}
             >
             {/* <Layer type="symbol" id="marker" layout={{ 'icon-image': 'marker-15' }}>
@@ -46,7 +58,7 @@ const PinballMap = (props) => {
             <button className="btn rounded-left shadow" style={{position: "absolute", top: 5, left: -5, backgroundColor: "#F5F9F9", opacity: 0.7}} onClick={onPress}>{props.isVisible ? CaretLeft : CaretRight}</button>
             <ZoomControl/>
             {props.machines?.locations?.map(mach => (
-                <Marker coordinates={[mach.lon, mach.lat]} anchor="bottom">
+                <Marker coordinates={[mach.lon, mach.lat]} anchor="bottom" key={mach.id}>
                     <img src="https://img.icons8.com/dusk/64/000000/map-pin.png"/>
                 </Marker>
             ))}
