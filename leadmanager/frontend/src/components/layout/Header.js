@@ -16,7 +16,7 @@ const Header = (props) => {
                 </strong>
             </span>
             <li className="nav-item">
-                <button onClick={props.logout} className="nav-link btn btn-info btn-sm text-light">
+                <button onClick={props.logout} className="nav-link btn btn-info btn-sm"> 
                     Logout
                 </button>
             </li>
@@ -39,12 +39,13 @@ const Header = (props) => {
     );
 
     return(
-        <nav className="navbar navbar-expand-sm navbar-light bg-light">
+        // navbar-light bg-light
+        <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
             <div className="container-fluid">
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <a className="navbar-brand" href="#">Lead Manager</a>
+                <a className="navbar-brand" href="#">Pinball Tracker</a>
                 <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
                     {isAuthenticated ? AuthLinks : GuestLinks}
                 </div>

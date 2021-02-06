@@ -1,9 +1,15 @@
 // type constants 
-export const GET_LEADS = 'GET_LEADS';
-export const DELETE_LEAD = 'DELETE_LEAD';
+
+// lead types
+export const GET_LEADS = "GET_LEADS";
+export const DELETE_LEAD = "DELETE_LEAD";
 export const ADD_LEAD = "ADD_LEAD";
+
+// message/alert types
 export const GET_ERRORS = "GET_ERRORS";
 export const CREATE_MESSAGE = "CREATE_MESSAGE";
+
+// auth types
 export const USER_LOADING = "USER_LOADING";
 export const USER_LOADED = "USER_LOADED";
 export const AUTH_ERROR = "AUTH_ERROR";
@@ -12,3 +18,7 @@ export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
+
+// Pinball machine types
+export const GET_MACHINES_BY_ADDRESS = "GET_MACHINES_BY_ADDRESS";
+export const GET_MACHINES_BY_LATLON = "GET_MACHINES_BY_LATLON";
