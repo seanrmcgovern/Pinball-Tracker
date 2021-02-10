@@ -19,14 +19,16 @@ const SearchBar = (props) => {
 
     return(
         <div className="d-inline-flex p-2">
-            <div className="input-group" style={{width: '28vw'}}>
-                <input type="text" value={address} onChange={onChange} name="address" className="form-control" placeholder="Los Angeles, CA"/>
-                <div className="input-group-append">
-                    <button onClick={onSubmit} className="btn btn-outline-primary" type="button">
-                        {SearchIcon}
-                    </button>
+            <form onSubmit={onSubmit}>
+                <div className="input-group" style={{width: '25vw'}}>
+                    <input type="text" value={address} onChange={onChange} name="address" className="form-control" placeholder="Los Angeles, CA" on/>
+                    <div className="input-group-append">
+                        <button onClick={onSubmit} className="btn btn-outline-primary" type="button">
+                            {SearchIcon}
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
 
     );

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'; 
 import { getMachinesByAddress } from  '../../actions/machines';
-import ReactMapboxGl, { Layer, Feature, Marker, ZoomControl } from 'react-mapbox-gl';
+import ReactMapboxGl, { Layer, Feature, Marker, ZoomControl, Popup } from 'react-mapbox-gl';
 // import 'mapbox-gl/dist/mapbox-gl.css';
 
 const Map = ReactMapboxGl({
@@ -38,12 +38,21 @@ const PinballMap = (props) => {
             setCenter([averageLon, averageLat]);
         }
     }, [props.machines]);
+
+    const [popupLocation, setPopupLocation] = useState();
+
+    const handleMarkerClick = (loc) => {
+        setPopupLocation(loc);
+    };
+
+    const closePopup = () => {
+        setPopupLocation();
+    }
     
     return (
         <Map 
-            // style="mapbox://styles/seanmcgovern/ckklq8nd640rm17s5ufcl9gp2"
-            style="mapbox://styles/mapbox/streets-v9"
-            // style="mapbox://styles/mapbox/light-v10"
+            // style="mapbox://styles/mapbox/streets-v9"
+            style="mapbox://styles/mapbox/light-v9"
             containerStyle={{
                 height: '85vh',
                 width: '100%',
@@ -52,16 +61,32 @@ const PinballMap = (props) => {
             center={center}
             onStyleLoad={handleStyleLoad}
             >
-            {/* <Layer type="symbol" id="marker" layout={{ 'icon-image': 'marker-15' }}>
-                <Feature coordinates={[-0.481747846041145, 51.3233379650232]} />
-            </Layer> */}
-            <button className="btn rounded-left shadow" style={{position: "absolute", top: 5, left: -5, backgroundColor: "#F5F9F9", opacity: 0.7}} onClick={onPress}>{props.isVisible ? CaretLeft : CaretRight}</button>
+            <button className="btn rounded-left shadow" style={{position: "absolute", top: 5, left: -5, backgroundColor: "#F5F9F9", opacity: 0.75}} onClick={onPress}>{props.isVisible ? CaretLeft : CaretRight}</button>
             <ZoomControl/>
-            {props.machines?.locations?.map(mach => (
-                <Marker coordinates={[mach.lon, mach.lat]} anchor="bottom" key={mach.id}>
-                    <img src="https://img.icons8.com/dusk/64/000000/map-pin.png"/>
-                </Marker>
-            ))}
+                {props.machines?.locations?.map(mach => (
+                    <Marker 
+                        coordinates={[mach.lon, mach.lat]} 
+                        anchor="bottom" 
+                        key={mach.id} 
+                        onClick={() => handleMarkerClick(mach)}>
+                        <img src="https://img.icons8.com/ultraviolet/40/000000/marker.png"/>                    
+                    </Marker>
+                ))}
+            {popupLocation && (
+                <Popup
+                    style={{width: "33%"}}
+                    coordinates={[popupLocation.lon, popupLocation.lat]}
+                    anchor="bottom"
+                    offset={25}
+                >
+                    <div className="container">
+                        <button onClick={closePopup} className="btn btn-outline-secondary cc_pointer" style={{position: "absolute", top: 0, right: 0}}>X</button>
+                        <h5 className="card-title m-0">{popupLocation.name}</h5>
+                        <h6 className="card-text m-0"><small className="text-muted">{popupLocation.street}</small></h6>
+                        <p>{popupLocation.description}</p>
+                    </div>
+                </Popup>
+            )}
         </Map>
     )
 };
