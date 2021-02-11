@@ -7,7 +7,7 @@ const Cards = (props) => {
     return (
         <div className="m-2">
             {props.data?.locations?.map(item => (
-                <div className="card m-3 border border-primary" key={item.id}>
+                <div className="card m-3 border" key={item.id}>
                     <button class="btn btn-outline-success cc_pointer" style={{position: "absolute", top: 5, right: 5}}>
                         {StarIcon}
                     </button>

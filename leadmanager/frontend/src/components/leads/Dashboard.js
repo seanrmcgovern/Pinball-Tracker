@@ -13,11 +13,17 @@ const Dashboard = () => {
         setIsVisible(!isVisible);
     }
 
+    const [searchActive, setSearchActive] = useState(false);
+
+    const toggleSearch = (value) => {
+        setSearchActive(value);
+    }
+
     return (
         <div>
-            <SearchBar/>
+            <SearchBar toggleSearch={toggleSearch}/>
             <div style={{display: "flex"}}>
-                <Drawer isVisible={isVisible} toggleDrawer={toggleDrawer}/>
+                <Drawer isVisible={isVisible} toggleDrawer={toggleDrawer} toggleSearch={toggleSearch} searchActive={searchActive}/>
                 <PinballMap isVisible={isVisible} toggleDrawer={toggleDrawer}/>
             </div>
             {/* <Form />

@@ -10,7 +10,8 @@ const SearchBar = (props) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        props.getMachinesByAddress(address, 25);
+        props.toggleSearch(true);
+        props.getMachinesByAddress(address, 25).then(() => props.toggleSearch(false));
     };
 
     const onChange = (e) => {

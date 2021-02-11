@@ -1,11 +1,22 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Transition } from 'react-transition-group'; 
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import { AppBar, Tab, Tabs, LinearProgress } from '@material-ui/core';
 import TabContent from './TabContent';
 import Cards from './Cards';
+import { withStyles } from '@material-ui/core/styles';
+
+const ActivityIndicator = withStyles((theme) => ({
+    colorPrimary: {
+      backgroundColor: "#7BD9B6",
+      opacity: 0.7
+    },
+    bar: {
+      borderRadius: 5,
+      backgroundColor: "#00B875",
+      opacity: 1
+    },
+  }))(LinearProgress);
 
 const Drawer = (props) => {
 
@@ -39,6 +50,7 @@ const Drawer = (props) => {
                     ...defaultStyle,
                     ...transitionStyles[state]
                 }}>
+                    {props.searchActive && <ActivityIndicator/>}
                     <AppBar position="sticky" color="default">
                         <Tabs
                             value={tabValue}
