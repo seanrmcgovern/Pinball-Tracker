@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'; 
 import { getMachinesByAddress } from  '../../actions/machines';
 import ReactMapboxGl, { Layer, Feature, Marker, ZoomControl, Popup } from 'react-mapbox-gl';
+import FavoriteIcon from './FavoriteIcon';
 // import 'mapbox-gl/dist/mapbox-gl.css';
 
 const Map = ReactMapboxGl({
@@ -82,16 +83,12 @@ const PinballMap = (props) => {
                     anchor="bottom"
                     offset={25}
                 >
-                    {/* style="max-width: 18rem;" */}
                     <div className="card border-success">
                         <div className="card-body pb-0">
                             <div className="d-flex">
                                 <h5 className="card-title text-primary m-0">{popupLocation.name}</h5>
-                                {/* <button className="btn btn-outline-success cc_pointer ml-auto m-0 p-1 rounded">
-                                    {StarIcon}
-                                </button> */}
+                                <FavoriteIcon/>
                             </div>
-                            
                             <h5 className="card-text m-0"><small className="text-muted">{popupLocation.street}</small></h5>
                             <h6 className="font-weight-normal m-1">{popupLocation.description}</h6>
                         </div>

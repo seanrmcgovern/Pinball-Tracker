@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { connect } from 'react-redux';
 import { getMachinesByAddress } from '../../actions/machines';
-import FavoriteIcon from "./FavoriteIcon";
 
 const SearchBar = (props) => {
 
@@ -31,7 +30,6 @@ const SearchBar = (props) => {
                     </div>
                 </div>
             </form>
-            <FavoriteIcon/>
         </div>
 
     );

@@ -1,4 +1,5 @@
 import React from 'react';
+import FavoriteIcon from './FavoriteIcon';
 
 const Cards = (props) => {
 
@@ -8,9 +9,10 @@ const Cards = (props) => {
         <div className="m-2">
             {props.data?.locations?.map(item => (
                 <div className="card m-3 border" key={item.id}>
-                    <button class="btn btn-outline-success cc_pointer" style={{position: "absolute", top: 5, right: 5}}>
+                    {/* <button class="btn btn-outline-success cc_pointer" style={{position: "absolute", top: 5, right: 5}}>
                         {StarIcon}
-                    </button>
+                    </button> */}
+                    <FavoriteIcon/>
                     <div className="card-body">
                         <h5 className="card-title text-primary m-0">{item.name}</h5>
                         <p className="card-text m-0"><small className="text-muted">{item.street}</small></p>
