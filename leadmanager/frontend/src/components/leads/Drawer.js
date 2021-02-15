@@ -33,7 +33,7 @@ const Drawer = (props) => {
         height: '85vh',
         overflow: 'auto',
         backgroundColor: "#F5F9F9",
-        boxShadow: `1px 1px 5px ${GREY}`
+        boxShadow: `1px 1px 5px ${GREY}`,
     };
 
     const transitionStyles = {

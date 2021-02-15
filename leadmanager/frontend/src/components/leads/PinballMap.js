@@ -14,6 +14,8 @@ const CaretLeft = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 
 const CaretRight = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-caret-right" viewBox="0 0 16 16"><path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753l5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/></svg>
 
+const StarIcon = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-star" viewBox="0 0 16 16"><path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288l1.847-3.658 1.846 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.564.564 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/></svg>
+
 const PinballMap = (props) => {
 
     const handleStyleLoad = map => {
@@ -36,6 +38,7 @@ const PinballMap = (props) => {
             const averageLon = average(lons);
             const averageLat = average(lats);
             setCenter([averageLon, averageLat]);
+            closePopup();
         }
     }, [props.machines]);
 
@@ -74,16 +77,28 @@ const PinballMap = (props) => {
                 ))}
             {popupLocation && (
                 <Popup
-                    style={{width: "33%"}}
+                    style={{width: "400px"}}
                     coordinates={[popupLocation.lon, popupLocation.lat]}
                     anchor="bottom"
                     offset={25}
                 >
-                    <div className="container">
-                        <button onClick={closePopup} className="btn btn-outline-secondary cc_pointer" style={{position: "absolute", top: 0, right: 0}}>X</button>
-                        <h5 className="card-title m-0">{popupLocation.name}</h5>
-                        <h6 className="card-text m-0"><small className="text-muted">{popupLocation.street}</small></h6>
-                        <p>{popupLocation.description}</p>
+                    {/* style="max-width: 18rem;" */}
+                    <div className="card border-success">
+                        <div className="card-body pb-0">
+                            <div className="d-flex">
+                                <h5 className="card-title text-primary m-0">{popupLocation.name}</h5>
+                                {/* <button className="btn btn-outline-success cc_pointer ml-auto m-0 p-1 rounded">
+                                    {StarIcon}
+                                </button> */}
+                            </div>
+                            
+                            <h5 className="card-text m-0"><small className="text-muted">{popupLocation.street}</small></h5>
+                            <h6 className="font-weight-normal m-1">{popupLocation.description}</h6>
+                        </div>
+                        <div className="d-inline-flex justify-content-around pb-1">
+                            <button type="button" class="btn btn-success">Machines</button>
+                            <button onClick={closePopup} type="button" class="btn btn-secondary">Close</button>
+                        </div>
                     </div>
                 </Popup>
             )}
