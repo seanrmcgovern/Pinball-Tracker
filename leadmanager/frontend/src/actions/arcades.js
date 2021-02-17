@@ -1,16 +1,16 @@
 import axios from 'axios';
 import { createMessage, returnErrors } from "./messages";
-import { GET_MACHINES_BY_ADDRESS, GET_MACHINES_BY_LATLON } from './types';
+import { GET_ARCADES_BY_ADDRESS, OPEN_ARCADE_DETAILS, CLOSE_ARCADE_DETAILS } from './types';
 import { tokenConfig } from "./auth";
 
-// Get machines based on address
-export const getMachinesByAddress = (address, maxDist) => (dispatch) => 
+// Get arcade locations based on address
+export const getArcadesByAddress = (address, maxDist) => (dispatch) => 
     new Promise(function(resolve, reject) {
         axios.get(`https://pinballmap.com/api/v1/locations/closest_by_address.json?address=${address}&max_distance=${maxDist}&send_all_within_distance=true`)
             .then(res => {
-                // dispatch GET_MACHINES_BY_ADDRESS action to reducer
+                // dispatch GET_ARCADES_BY_ADDRESS action to reducer
                 dispatch({
-                    type: GET_MACHINES_BY_ADDRESS,
+                    type: GET_ARCADES_BY_ADDRESS,
                     payload: res.data
                 });
                 resolve(res);
@@ -20,5 +20,15 @@ export const getMachinesByAddress = (address, maxDist) => (dispatch) =>
             });
 });
 
+export const openArcadeDetails = (arcade) => (dispatch) => {
+    dispatch({
+        type: OPEN_ARCADE_DETAILS,
+        payload: arcade
+    });
+};
 
-// Get machines based on latitude and longitude
+export const closeArcadeDetails = () => (dispatch) => {
+    dispatch({
+        type: CLOSE_ARCADE_DETAILS
+    });
+};

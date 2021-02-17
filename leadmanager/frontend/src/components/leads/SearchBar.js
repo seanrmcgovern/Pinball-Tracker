@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from 'react-redux';
-import { getMachinesByAddress } from '../../actions/machines';
+import { getArcadesByAddress } from '../../actions/arcades';
 
 const SearchBar = (props) => {
 
@@ -11,7 +11,7 @@ const SearchBar = (props) => {
     const onSubmit = (e) => {
         e.preventDefault();
         props.toggleSearch(true);
-        props.getMachinesByAddress(address, 25).then(() => props.toggleSearch(false));
+        props.getArcadesByAddress(address, 25).then(() => props.toggleSearch(false));
     };
 
     const onChange = (e) => {
@@ -22,7 +22,7 @@ const SearchBar = (props) => {
         <div className="d-inline-flex p-2">
             <form onSubmit={onSubmit}>
                 <div className="input-group" style={{width: '25vw'}}>
-                    <input type="text" value={address} onChange={onChange} name="address" className="form-control" placeholder="Los Angeles, CA" on/>
+                    <input type="text" value={address} onChange={onChange} name="address" className="form-control" placeholder="Los Angeles, CA"/>
                     <div className="input-group-append">
                         <button onClick={onSubmit} className="btn btn-outline-primary" type="button">
                             {SearchIcon}
@@ -35,4 +35,4 @@ const SearchBar = (props) => {
     );
 };
 
-export default connect(null, {getMachinesByAddress})(SearchBar);
+export default connect(null, { getArcadesByAddress })(SearchBar);

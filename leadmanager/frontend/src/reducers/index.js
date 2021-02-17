@@ -3,10 +3,10 @@ import leads from './leads';
 import errors from "./errors";
 import messages from "./messages";
 import auth from "./auth";
-import machines from "./machines";
+import arcades from "./arcades";
 
 export default combineReducers({
-    machines,
+    arcades,
     leads,
     errors,
     messages,

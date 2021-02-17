@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'; 
-import { getMachinesByAddress } from  '../../actions/machines';
+import { getArcadesByAddress } from  '../../actions/arcades';
 import ReactMapboxGl, { Layer, Feature, Marker, ZoomControl, Popup } from 'react-mapbox-gl';
 import FavoriteIcon from './FavoriteIcon';
 // import 'mapbox-gl/dist/mapbox-gl.css';
@@ -32,16 +32,16 @@ const PinballMap = (props) => {
     const [center, setCenter] = useState([-78.476677, 38.029305]);
 
     useEffect(() => {
-        if (props.machines?.locations) {
+        if (props.arcades?.locations) {
             const average = arr => arr.reduce((sum, cur) => sum + cur, 0) / arr.length;
-            const lats = props.machines.locations.map(m => parseFloat(m.lat));
-            const lons = props.machines.locations.map(m => parseFloat(m.lon));
+            const lats = props.arcades.locations.map(m => parseFloat(m.lat));
+            const lons = props.arcades.locations.map(m => parseFloat(m.lon));
             const averageLon = average(lons);
             const averageLat = average(lats);
             setCenter([averageLon, averageLat]);
             closePopup();
         }
-    }, [props.machines]);
+    }, [props.arcades]);
 
     const [popupLocation, setPopupLocation] = useState();
 
@@ -67,7 +67,7 @@ const PinballMap = (props) => {
             >
             <button className="btn rounded-left shadow" style={{position: "absolute", top: 5, left: -5, backgroundColor: "#F5F9F9", opacity: 0.75}} onClick={onPress}>{props.isVisible ? CaretLeft : CaretRight}</button>
             <ZoomControl/>
-                {props.machines?.locations?.map(mach => (
+                {props.arcades?.locations?.map(mach => (
                     <Marker 
                         coordinates={[mach.lon, mach.lat]} 
                         anchor="bottom" 
@@ -83,7 +83,7 @@ const PinballMap = (props) => {
                     anchor="bottom"
                     offset={25}
                 >
-                    <div className="card border-success">
+                    <div className="card border-success p-2 m-0" style={{backgroundColor: "#F5F9F9"}}>
                         <div className="card-body pb-0">
                             <div className="d-flex">
                                 <h5 className="card-title text-primary m-0">{popupLocation.name}</h5>
@@ -104,7 +104,7 @@ const PinballMap = (props) => {
 };
 
 const mapStateToProps = state => ({
-    machines: state.machines.machines
+    arcades: state.arcades.arcades
 });
 
-export default connect(mapStateToProps, { getMachinesByAddress })(PinballMap);
+export default connect(mapStateToProps, { getArcadesByAddress })(PinballMap);
