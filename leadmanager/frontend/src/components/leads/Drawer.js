@@ -1,11 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { closeArcadeDetails } from '../../actions/arcades';
 import { Transition } from 'react-transition-group'; 
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import { AppBar, Tab, Tabs, LinearProgress } from '@material-ui/core';
+import ArcadeDetails from './ArcadeDetails';
 import TabContent from './TabContent';
 import Cards from './Cards';
+import { withStyles } from '@material-ui/core/styles';
+
+const ActivityIndicator = withStyles((theme) => ({
+    colorPrimary: {
+      backgroundColor: "#7BD9B6",
+      opacity: 0.7
+    },
+    bar: {
+      borderRadius: 5,
+      backgroundColor: "#00B875",
+      opacity: 1
+    },
+  }))(LinearProgress);
 
 const Drawer = (props) => {
 
@@ -22,7 +35,7 @@ const Drawer = (props) => {
         height: '85vh',
         overflow: 'auto',
         backgroundColor: "#F5F9F9",
-        boxShadow: `1px 1px 5px ${GREY}`
+        boxShadow: `1px 1px 5px ${GREY}`,
     };
 
     const transitionStyles = {
@@ -32,31 +45,50 @@ const Drawer = (props) => {
         exited: { width: 0, zIndex: 0 }
     };
 
+    const [detailsOpen, setDetailsOpen] = useState(props.arcadeDetails != null);
+
+    const closeDetails = () => {
+        setDetailsOpen(false);
+        props.closeArcadeDetails();
+    }
+
+    useEffect(() => {
+        setDetailsOpen(props.arcadeDetails != null);
+    }, [props.arcadeDetails]);
+
     return (
         <Transition in={props.isVisible} timeout={300}>
             {state => (
-                <div style={{
-                    ...defaultStyle,
-                    ...transitionStyles[state]
-                }}>
-                    <AppBar position="sticky" color="default">
-                        <Tabs
-                            value={tabValue}
-                            onChange={handleTabChange}
-                            variant="fullWidth"
-                            style={{color: "#00B875", boxShadow: `1px 1px 5px ${GREY}`}}
-                            TabIndicatorProps={{style: {background: "#00B875"}}}
-                        >
-                            <Tab label="Curated Machines" style={{textTransform: "capitalize", fontFamily: `-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"`}}/>
-                            <Tab label="Community Content" style={{textTransform: "capitalize", fontFamily: `-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"`}}/>
-                        </Tabs>
-                    </AppBar>
-                    <TabContent value={tabValue} index={0}>
-                        <Cards data={props.machines}/>
-                    </TabContent>
-                    <TabContent value={tabValue} index={1}>
-                        User submitted Pinball Machines
-                    </TabContent>
+                <div 
+                    style={{
+                        ...defaultStyle,
+                        ...transitionStyles[state]
+                    }}
+                >
+                    {props.searchActive && <ActivityIndicator/>}
+                    <ArcadeDetails arcadeDetails={props.arcadeDetails} open={detailsOpen} close={closeDetails}/>
+                    {!detailsOpen && (
+                        <Fragment>
+                            <AppBar position="sticky" color="default">
+                                <Tabs
+                                    value={tabValue}
+                                    onChange={handleTabChange}
+                                    variant="fullWidth"
+                                    style={{color: "#00B875", boxShadow: `1px 1px 5px ${GREY}`}}
+                                    TabIndicatorProps={{style: {background: "#00B875"}}}
+                                >
+                                    <Tab label="Curated Locations" style={{textTransform: "capitalize", fontFamily: `-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"`}}/>
+                                    <Tab label="Community Content" style={{textTransform: "capitalize", fontFamily: `-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"`}}/>
+                                </Tabs>
+                            </AppBar>
+                            <TabContent value={tabValue} index={0}>
+                                <Cards data={props.arcades}/>
+                            </TabContent>
+                            <TabContent value={tabValue} index={1}>
+                                User submitted Pinball Machines
+                            </TabContent>
+                        </Fragment>
+                    )}
                 </div>
             )}
         </Transition>
@@ -64,7 +96,8 @@ const Drawer = (props) => {
 };
 
 const mapStateToProps = state => ({
-    machines: state.machines.machines
+    arcades: state.arcades.arcades,
+    arcadeDetails: state.arcades.arcadeDetails
 });
 
-export default connect(mapStateToProps)(Drawer);
+export default connect(mapStateToProps, { closeArcadeDetails })(Drawer);
