@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { closeArcadeDetails } from '../../actions/arcades';
 import { Transition } from 'react-transition-group'; 
 import { AppBar, Tab, Tabs, LinearProgress } from '@material-ui/core';
 import ArcadeDetails from './ArcadeDetails';
@@ -46,6 +47,11 @@ const Drawer = (props) => {
 
     const [detailsOpen, setDetailsOpen] = useState(props.arcadeDetails != null);
 
+    const closeDetails = () => {
+        setDetailsOpen(false);
+        props.closeArcadeDetails();
+    }
+
     useEffect(() => {
         setDetailsOpen(props.arcadeDetails != null);
     }, [props.arcadeDetails]);
@@ -60,7 +66,7 @@ const Drawer = (props) => {
                     }}
                 >
                     {props.searchActive && <ActivityIndicator/>}
-                    <ArcadeDetails open={detailsOpen}/>
+                    <ArcadeDetails arcadeDetails={props.arcadeDetails} open={detailsOpen} close={closeDetails}/>
                     {!detailsOpen && (
                         <Fragment>
                             <AppBar position="sticky" color="default">
@@ -71,7 +77,7 @@ const Drawer = (props) => {
                                     style={{color: "#00B875", boxShadow: `1px 1px 5px ${GREY}`}}
                                     TabIndicatorProps={{style: {background: "#00B875"}}}
                                 >
-                                    <Tab label="Curated Machines" style={{textTransform: "capitalize", fontFamily: `-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"`}}/>
+                                    <Tab label="Curated Locations" style={{textTransform: "capitalize", fontFamily: `-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"`}}/>
                                     <Tab label="Community Content" style={{textTransform: "capitalize", fontFamily: `-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"`}}/>
                                 </Tabs>
                             </AppBar>
@@ -94,4 +100,4 @@ const mapStateToProps = state => ({
     arcadeDetails: state.arcades.arcadeDetails
 });
 
-export default connect(mapStateToProps)(Drawer);
+export default connect(mapStateToProps, { closeArcadeDetails })(Drawer);
