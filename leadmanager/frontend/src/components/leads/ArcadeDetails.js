@@ -42,10 +42,27 @@ const ArcadeDetails = (props) => {
                                 </div>
                                 <div>
                                     {details.location_machine_xrefs.map(m => 
-                                        <div className="card m-3 p-3" id={m.machine.id}>
-                                            <h5 className="card-title">{m.machine.name}</h5>
-                                            <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                            <a href="#" className="btn btn-primary">Go somewhere</a>
+                                        <div className="card border-success m-3 p-3" id={m.machine.id}>
+                                            <h5 className="card-title text-success">{m.machine.name}</h5>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <h6 className="text-dark font-weight-bold d-inline">Manufacturer:  </h6> 
+                                                    <h6 className="d-inline font-weight-normal text-muted">{m.machine.manufacturer}</h6>
+                                                </li>
+                                                {m.condition && <li className="list-group-item">
+                                                    <h6 className="text-dark font-weight-bold d-inline">Condition:  </h6> 
+                                                    <h6 className="d-inline font-weight-normal text-muted">{m.condition}</h6>
+                                                </li>}
+                                                <li className="list-group-item">
+                                                    <h6 className="text-dark font-weight-bold d-inline">Date submitted:  </h6> 
+                                                    <h6 className="d-inline font-weight-normal text-muted">{m.created_at}</h6>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <h6 className="text-dark font-weight-bold d-inline">IPDB Link:  </h6> 
+                                                    <h6 className="d-inline font-weight-normal"><a href={m.machine.ipdb_link} target="_blank">{m.machine.ipdb_link}</a></h6>
+                                                </li>
+                                            </ul>
+                                            {/* <a href="#" className="btn btn-primary">Go somewhere</a> */}
                                         </div>
                                     )}
                                 </div>
