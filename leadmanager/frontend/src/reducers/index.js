@@ -1,14 +1,16 @@
 import { combineReducers } from 'redux';
 import leads from './leads';
-import errors from "./errors";
-import messages from "./messages";
-import auth from "./auth";
 import arcades from "./arcades";
+import locations from "./locations";
+import auth from "./auth";
+import messages from "./messages";
+import errors from "./errors";
 
 export default combineReducers({
-    arcades,
     leads,
-    errors,
+    arcades,
+    locations,
+    auth,
     messages,
-    auth
+    errors,
 });

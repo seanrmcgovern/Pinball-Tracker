@@ -4,6 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://bootswatch.com/4/litera/bootstrap.min.css">
+    <style>
+        .btn:focus, .btn:active:focus, .btn.active:focus {
+            box-shadow: none !important;
+        }
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        .nav-link::after{
+            content: '';
+            display: block;
+            width: 0;
+            height: 2.5px;
+            background: #fff;
+            transition: width .5s;
+        }
+
+        .nav-link:hover::after{
+            width: 100%;
+            transition: width .5s;
+        }
+        </style>
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css" rel="stylesheet"/>
     <title>Pinball Tracker</title>
 </head>

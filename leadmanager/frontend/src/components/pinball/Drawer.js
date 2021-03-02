@@ -33,7 +33,7 @@ const Drawer = (props) => {
     const defaultStyle = {
         transition: `width .3s linear`,
         height: '85vh',
-        overflow: 'auto',
+        // overflow: 'auto',
         backgroundColor: "#F5F9F9",
         boxShadow: `1px 1px 5px ${GREY}`,
     };
@@ -65,7 +65,7 @@ const Drawer = (props) => {
                         ...transitionStyles[state]
                     }}
                 >
-                    {props.searchActive && <ActivityIndicator/>}
+                    {(props.arcadeSearchActive || props.locationSearchActive) && <ActivityIndicator/>}
                     <ArcadeDetails arcadeDetails={props.arcadeDetails} open={detailsOpen} close={closeDetails}/>
                     {!detailsOpen && (
                         <Fragment>
@@ -82,10 +82,10 @@ const Drawer = (props) => {
                                 </Tabs>
                             </AppBar>
                             <TabContent value={tabValue} index={0}>
-                                <Cards data={props.arcades}/>
+                                <Cards data={props.arcades.locations}/>
                             </TabContent>
                             <TabContent value={tabValue} index={1}>
-                                User submitted Pinball Machines
+                                <Cards data={props.locations}/>
                             </TabContent>
                         </Fragment>
                     )}
@@ -97,7 +97,8 @@ const Drawer = (props) => {
 
 const mapStateToProps = state => ({
     arcades: state.arcades.arcades,
-    arcadeDetails: state.arcades.arcadeDetails
+    arcadeDetails: state.arcades.arcadeDetails,
+    locations: state.locations.locations
 });
 
 export default connect(mapStateToProps, { closeArcadeDetails })(Drawer);

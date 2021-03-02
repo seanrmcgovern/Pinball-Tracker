@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { connect } from 'react-redux';
 import { getArcadesByAddress } from '../../actions/arcades';
+import { getLocationsByAddress } from '../../actions/locations';
 
 const SearchBar = (props) => {
 
@@ -10,8 +11,10 @@ const SearchBar = (props) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        props.toggleSearch(true);
-        props.getArcadesByAddress(address, 25).then(() => props.toggleSearch(false));
+        props.toggleArcadeSearch(true);
+        props.toggleLocationSearch(true);
+        props.getArcadesByAddress(address, 25).then(() => props.toggleArcadeSearch(false));
+        props.getLocationsByAddress(address).then(() => props.toggleLocationSearch(false));
     };
 
     const onChange = (e) => {
@@ -35,4 +38,4 @@ const SearchBar = (props) => {
     );
 };
 
-export default connect(null, { getArcadesByAddress })(SearchBar);
+export default connect(null, { getArcadesByAddress, getLocationsByAddress })(SearchBar);

@@ -56,10 +56,10 @@ const Login = (props) => {
                             Login
                         </button>
                     </div>
-                    <p>
+                    <h6 className="font-weight-normal text-muted">
                         Don't have an account? 
-                        <Link to="/register"> Register</Link>
-                    </p>
+                        <Link to="/register" style={{textDecoration: "none"}}> Register</Link>
+                    </h6>
                 </form>
             </div>
         </div>

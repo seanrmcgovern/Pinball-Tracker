@@ -13,21 +13,25 @@ const Dashboard = () => {
         setIsVisible(!isVisible);
     }
 
-    const [searchActive, setSearchActive] = useState(false);
+    const [arcadeSearchActive, setArcadeSearchActive] = useState(false);
 
-    const toggleSearch = (value) => {
-        setSearchActive(value);
+    const [locationSearchActive, setLocationSearchActive] = useState(false);
+
+    const toggleArcadeSearch = (value) => {
+        setArcadeSearchActive(value);
+    }
+
+    const toggleLocationSearch = (value) => {
+        setLocationSearchActive(value);
     }
 
     return (
         <div>
-            <SearchBar toggleSearch={toggleSearch}/>
+            <SearchBar toggleArcadeSearch={toggleArcadeSearch} toggleLocationSearch={toggleLocationSearch}/>
             <div style={{display: "flex"}}>
-                <Drawer isVisible={isVisible} toggleDrawer={toggleDrawer} toggleSearch={toggleSearch} searchActive={searchActive}/>
+                <Drawer isVisible={isVisible} toggleDrawer={toggleDrawer} arcadeSearchActive={arcadeSearchActive} locationSearchActive={locationSearchActive}/>
                 <PinballMap isVisible={isVisible} toggleDrawer={toggleDrawer}/>
             </div>
-            {/* <Form />
-            <Leads /> */}
             <footer>
                 <div className="navbar navbar-inverse navbar-static-bottom" role="navigation">
                     <div className="navbar-text pull-left">

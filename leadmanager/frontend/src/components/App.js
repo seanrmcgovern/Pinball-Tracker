@@ -8,7 +8,9 @@ import { transitions, positions, Provider as AlertProvider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
 import Alerts from './layout/Alerts';
 import Header from './layout/Header';
-import Dashboard from './leads/Dashboard';
+import Dashboard from './pinball/Dashboard';
+import LocationForm from './pinball/LocationForm';
+import Profile from './pinball/Profile';
 import Login from "./accounts/Login";
 import Register from "./accounts/Register";
 import PrivateRoute from "./common/PrivateRoute";
@@ -33,9 +35,11 @@ const App  = () => {
                         <Header />
                         <Alerts />
                             <Switch>
-                                <PrivateRoute exact path="/" component={Dashboard} />
+                                <Route exact path="/" component={Dashboard} />
                                 <Route exact path="/register" component={Register} />
                                 <Route exact path="/login" component={Login} />
+                                <PrivateRoute exact path="/locations" component={LocationForm} />
+                                <PrivateRoute exact path="/profile" component={Profile} />
                             </Switch>
                     </Fragment>
                 </Router>

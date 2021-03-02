@@ -87,10 +87,10 @@ const Register = (props) => {
                             Register
                         </button>
                     </div>
-                    <p>
+                    <h6 className="font-weight-normal text-muted">
                         Already have an account? 
-                        <Link to="/login"> Login</Link>
-                    </p>
+                        <Link to="/login" style={{textDecoration: "none"}}> Login</Link>
+                    </h6>
                 </form>
             </div>
         </div>
