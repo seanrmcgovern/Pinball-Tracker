@@ -36,14 +36,4 @@ export const addLead = (lead) => (dispatch, getState) => {
             payload: res.data
         });
     }).catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
-        // {
-        //     const errors = {
-        //         msg: err.response.data,
-        //         status: err.response.status
-        //     };
-        //     dispatch({
-        //         type: GET_ERRORS,
-        //         payload: errors
-        //     }); 
-        // });
 };

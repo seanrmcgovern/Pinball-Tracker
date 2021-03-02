@@ -3,6 +3,7 @@ import { createMessage, returnErrors } from "./messages";
 import { GET_ARCADES_BY_ADDRESS, OPEN_ARCADE_DETAILS, CLOSE_ARCADE_DETAILS } from './types';
 import { tokenConfig } from "./auth";
 
+// Pinball machine locations based off of 3rd party api
 // Get arcade locations based on address
 export const getArcadesByAddress = (address, maxDist) => (dispatch) => 
     new Promise(function(resolve, reject) {
@@ -16,7 +17,7 @@ export const getArcadesByAddress = (address, maxDist) => (dispatch) =>
                 resolve(res);
             }).catch(err => {
                 dispatch(returnErrors(err.response.data));
-                reject(error);
+                reject(err);
             });
 });
 

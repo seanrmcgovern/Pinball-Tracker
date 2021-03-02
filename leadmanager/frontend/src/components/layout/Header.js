@@ -10,6 +10,21 @@ const Header = (props) => {
 
     const AuthLinks = (
         <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li className="nav-item">
+                <Link to="/" className="nav-link">
+                    Explore
+                </Link>
+            </li>
+            <li className="nav-item">
+                <Link to="/locations" className="nav-link">
+                    Locations
+                </Link>
+            </li>
+            <li className="nav-item mr-3">
+                <Link to="/profile" className="nav-link">
+                    Profile
+                </Link>
+            </li>
             <span className="navbar-text mr-3">
                 <strong>
                     {user ? `Welcome ${user.username}` : ""}
@@ -25,6 +40,11 @@ const Header = (props) => {
 
     const GuestLinks = (
         <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li className="nav-item">
+                <Link to="/" className="nav-link">
+                    Explore
+                </Link>
+            </li>
             <li className="nav-item">
                 <Link to="/register" className="nav-link">
                     Register
@@ -45,7 +65,10 @@ const Header = (props) => {
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <a className="navbar-brand" href="#">Pinball Tracker</a>
+                {/* <a className="navbar-brand nav-link" href="#">Pinball Tracker</a> */}
+                <Link to="/" className="nav-link navbar-brand">
+                    Pinball Tracker
+                </Link>
                 <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
                     {isAuthenticated ? AuthLinks : GuestLinks}
                 </div>
@@ -53,11 +76,6 @@ const Header = (props) => {
         </nav>        
     )
 };
-
-// {/* <form className="d-flex">
-//                         <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-//                         <button className="btn btn-outline-success" type="submit">Search</button>
-//                     </form> */}
 
 Header.propTypes = {
     auth: PropTypes.object.isRequired,

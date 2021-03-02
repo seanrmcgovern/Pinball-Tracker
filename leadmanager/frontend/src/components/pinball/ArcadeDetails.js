@@ -28,10 +28,10 @@ const ArcadeDetails = (props) => {
                         ...transitionStyles[state]
                     }}>
                         {state == "entered" && details && (
-                            <div className="card overflow-auto h-100">
+                            <div className="card">
                                 <div className="card-header d-flex sticky-top" style={{opacity: 1, backgroundColor: "#F7F7F7"}}>
                                     <div>
-                                        <h5 className="card-title text-primary align-self-center m-0 p-0">{details.name}</h5>
+                                        <h5 className="card-title text-primary align-self-center m-0 p-0 pt-2">{details.name}</h5>
                                         <p className="card-text m-0 p-0"><small className="text-muted">{details.street}, {details.city}, {details.state}</small></p>
                                     </div>
                                     <div className="ml-auto p-1">
@@ -40,9 +40,9 @@ const ArcadeDetails = (props) => {
                                         </button>
                                     </div>
                                 </div>
-                                <div>
-                                    {details.location_machine_xrefs.map(m => 
-                                        <div className="card border-success m-3 p-3" id={m.machine.id}>
+                                <div style={{overflow: "auto", height: "75vh"}}>
+                                    {details.location_machine_xrefs?.map(m => 
+                                        <div className="card border-success m-3 p-3" key={m.machine.id}>
                                             <h5 className="card-title text-success">{m.machine.name}</h5>
                                             <ul className="list-group">
                                                 <li className="list-group-item">

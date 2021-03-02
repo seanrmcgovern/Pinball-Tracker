@@ -29,12 +29,18 @@ const Alerts = (props) => {
         if (error.msg.username) {
             alert.error(error.msg.username.join());
         }
+        if (error.msg.coordinates) {
+            alert.error('Location with these coordinates already exists.');
+        }
 
     }, [props.error]);
 
     useEffect(() => {
         const message = props.message;
         if (message !== prevMessage) {
+            if (message.addLocation) {
+                alert.success(message.addLocation);
+            }
             if (message.deleteLead) {
                 alert.success(message.deleteLead);
             }

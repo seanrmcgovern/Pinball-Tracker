@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'; 
-import { getArcadesByAddress } from  '../../actions/arcades';
-import ReactMapboxGl, { Layer, Feature, Marker, ZoomControl, Popup } from 'react-mapbox-gl';
+import { getArcadesByAddress, openArcadeDetails } from  '../../actions/arcades';
+import ReactMapboxGl, { Marker, ZoomControl, Popup } from 'react-mapbox-gl';
 import FavoriteIcon from './FavoriteIcon';
 import { GeolocateControl } from "mapbox-gl";
-// import 'mapbox-gl/dist/mapbox-gl.css';
 
 const Map = ReactMapboxGl({
     accessToken:
@@ -29,16 +28,31 @@ const PinballMap = (props) => {
         props.toggleDrawer();
     }
 
-    const [center, setCenter] = useState([-78.476677, 38.029305]);
+    const [center, setCenter] = useState([ -80, 39.8283 ]);
+
+    const [bounds, setBounds] = useState([[-120, 50], [-55, 20]]);
 
     useEffect(() => {
         if (props.arcades?.locations?.length > 0) {
-            const average = arr => arr.reduce((sum, cur) => sum + cur, 0) / arr.length;
+            // const average = arr => arr.reduce((sum, cur) => sum + cur, 0) / arr.length;
+            // const lats = props.arcades.locations.map(m => parseFloat(m.lat));
+            // const lons = props.arcades.locations.map(m => parseFloat(m.lon));
+            // const averageLon = average(lons);
+            // const averageLat = average(lats);
+            // setCenter([averageLon, averageLat]);
+
             const lats = props.arcades.locations.map(m => parseFloat(m.lat));
             const lons = props.arcades.locations.map(m => parseFloat(m.lon));
-            const averageLon = average(lons);
-            const averageLat = average(lats);
-            setCenter([averageLon, averageLat]);
+            // top left point
+            const maxLat = lats.reduce((a, b) => Math.max(a, b)) + 0.1; // Math.max(...lats);
+            const minLon = lons.reduce((a, b) => Math.min(a, b)); // Math.min(...lons);
+            const topLeft = [minLon, maxLat];
+            // bottom right point
+            const minLat = lats.reduce((a, b) => Math.min(a, b)) - 0.1; // Math.min(...lats);
+            const maxLon = lons.reduce((a, b) => Math.max(a, b)) + 0.2; // Math.max(...lons);
+            const bottomRight = [maxLon, minLat];
+            setBounds([topLeft, bottomRight]);
+
             closePopup();
         }
     }, [props.arcades]);
@@ -49,9 +63,16 @@ const PinballMap = (props) => {
         setPopupLocation(loc);
     };
 
+    const openDetails = (loc) => {
+        props.openArcadeDetails(loc);
+    }
+
     const closePopup = () => {
         setPopupLocation();
-    }
+        props.openArcadeDetails();
+    };
+
+    const [hoveredMarker, setHoveredMarker] = useState();
     
     return (
         <Map 
@@ -60,23 +81,25 @@ const PinballMap = (props) => {
             containerStyle={{
                 height: '85vh',
                 width: '100%',
-                flex: 1, 
+                flex: 1,
             }}
-            center={center}
+            fitBounds={bounds}
             onStyleLoad={handleStyleLoad}
             >
             <button className="btn rounded-left shadow" style={{position: "absolute", top: 5, left: -5, backgroundColor: "#F5F9F9", opacity: 0.75}} onClick={onPress}>{props.isVisible ? CaretLeft : CaretRight}</button>
             <ZoomControl style={{marginTop: 40}}/>
-                {props.arcades?.locations?.map(mach => (
-                    <Marker 
-                        coordinates={[mach.lon, mach.lat]} 
-                        anchor="bottom" 
-                        key={mach.id} 
-                        onClick={() => handleMarkerClick(mach)}
-                        style={{cursor: "pointer"}}>
-                        <img src="https://img.icons8.com/ultraviolet/40/000000/marker.png"/>                    
-                    </Marker>
-                ))}
+            {props.arcades?.locations?.map(loc => (
+                <Marker 
+                    coordinates={[loc.lon, loc.lat]} 
+                    anchor="bottom" 
+                    key={loc.id} 
+                    onClick={() => handleMarkerClick(loc)}
+                    onMouseEnter={() => setHoveredMarker(loc.id)}
+                    onMouseLeave={() => setHoveredMarker()}
+                    style={{cursor: "pointer", position: "absolute", zIndex: hoveredMarker == loc.id || popupLocation?.id == loc.id ? 2: 1}}>
+                    <img src="https://img.icons8.com/ultraviolet/40/000000/marker.png" style={hoveredMarker == loc.id || popupLocation?.id == loc.id  ? {transform: "scale(1.2)", marginBottom: 10} : {opacity: 0.8}}/>                    
+                </Marker>
+            ))}
             {popupLocation && (
                 <Popup
                     style={{width: "400px"}}
@@ -84,18 +107,18 @@ const PinballMap = (props) => {
                     anchor="bottom"
                     offset={25}
                 >
-                    <div className="card border-success p-2 m-0" style={{backgroundColor: "#F5F9F9"}}>
+                    <div className="card border-success p-2 m-0">
                         <div className="card-body pb-0">
                             <div className="d-flex">
                                 <h5 className="card-title text-primary m-0">{popupLocation.name}</h5>
                                 <FavoriteIcon/>
                             </div>
                             <h5 className="card-text m-0"><small className="text-muted">{popupLocation.street}</small></h5>
-                            <h6 className="font-weight-normal m-1">{popupLocation.description}</h6>
-                        </div>
-                        <div className="d-inline-flex justify-content-around pb-1">
-                            <button type="button" class="btn btn-success">Machines</button>
-                            <button onClick={closePopup} type="button" class="btn btn-secondary">Close</button>
+                            <p className="lead text-dark m-1"><small>{popupLocation.description}</small></p>
+                            <div className="d-inline-flex justify-content-left">
+                                <button onClick={() => openDetails(popupLocation)} type="button" class="btn btn-success rounded p-1 pl-2 pr-2 m-0 mr-1">Details</button>
+                                <button onClick={closePopup} type="button" class="btn btn-secondary rounded p-1 pl-2 pr-2 m-0">Close</button>
+                            </div>
                         </div>
                     </div>
                 </Popup>
@@ -108,4 +131,4 @@ const mapStateToProps = state => ({
     arcades: state.arcades.arcades
 });
 
-export default connect(mapStateToProps, { getArcadesByAddress })(PinballMap);
+export default connect(mapStateToProps, { getArcadesByAddress, openArcadeDetails })(PinballMap);

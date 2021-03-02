@@ -18,7 +18,7 @@ const Form = (props) => {
     };
 
     const onChange = (e) => {
-        setLead({ ...lead, [e.target.name]: e.target.value })
+        setLead({ ...lead, [e.target.name]: e.target.value });
     };
 
     const prevMessage = usePrevious(props.message);
