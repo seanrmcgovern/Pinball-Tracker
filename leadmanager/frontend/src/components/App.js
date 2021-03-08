@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import { Provider } from 'react-redux';
 import store from '../store';
 import { loadUser } from '../actions/auth';
@@ -8,6 +8,7 @@ import { transitions, positions, Provider as AlertProvider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
 import Alerts from './layout/Alerts';
 import Header from './layout/Header';
+import Home from './pinball/Home';
 import Dashboard from './pinball/Dashboard';
 import LocationForm from './pinball/LocationForm';
 import Profile from './pinball/Profile';
@@ -35,7 +36,8 @@ const App  = () => {
                         <Header />
                         <Alerts />
                             <Switch>
-                                <Route exact path="/" component={Dashboard} />
+                                <Route exact path="/" component={Home} />
+                                <Route exact path="/explore" component={Dashboard} />
                                 <Route exact path="/register" component={Register} />
                                 <Route exact path="/login" component={Login} />
                                 <PrivateRoute exact path="/locations" component={LocationForm} />
