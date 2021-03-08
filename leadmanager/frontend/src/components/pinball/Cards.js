@@ -8,7 +8,7 @@ const Cards = (props) => {
     const [hoveredCard, setHoveredCard] = useState();
 
     return (
-        <div className="m-2 overflow-auto" style={{height: "75vh" , /* IE and Edge */ '-ms-overflow-style': "none", /* Firefox */ 'scrollbar-width': "none"}}>
+        <div className="m-2 overflow-auto" style={{height: "75vh" , /* IE and Edge */ 'ms-overflow-style': "none", /* Firefox */ 'scrollbarWidth': "none"}}>
             {props.data?.map(loc => (
                 <div 
                     className="card m-3" 
