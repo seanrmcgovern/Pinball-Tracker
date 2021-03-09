@@ -110,6 +110,24 @@ const LocationForm = (props) => {
                             value={location.lon}/>
                     </div>
                     <div className="form-group">
+                        <label>Description</label>
+                        <input
+                            className="form-control"
+                            type="text"
+                            name="description"
+                            onChange={onChange}
+                            value={location.description}/>
+                    </div>
+                    <div className="form-group">
+                        <label>Website</label>
+                        <input
+                            className="form-control"
+                            type="text"
+                            name="website"
+                            onChange={onChange}
+                            value={location.website}/>
+                    </div>
+                    <div className="form-group">
                         <button type="submit" className="btn btn-primary">
                             Submit
                         </button>
