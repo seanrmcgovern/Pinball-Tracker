@@ -15,7 +15,6 @@ export default function(state = initialState, action) {
         case ADD_LOCATION:
             return {
                 ...state,
-                // testing
                 locations: [...state.locations, action.payload]
             };
         default:

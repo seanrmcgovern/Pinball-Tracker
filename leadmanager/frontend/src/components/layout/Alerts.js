@@ -17,6 +17,15 @@ const Alerts = (props) => {
             // join to convert the message into a string
             alert.error(`Name: ${error.msg.name.join()}`);
         }
+        if (error.msg.city) {
+            alert.error(`City: ${error.msg.name.join()}`);
+        }
+        if (error.msg.street) {
+            alert.error(`Street: ${error.msg.name.join()}`);
+        }
+        // if (error.msg.name) {
+        //     alert.error(`Name: ${error.msg.name.join()}`);
+        // }
         if (error.msg.email) {
             alert.error(`Email: ${error.msg.email.join()}`);
         }
@@ -30,7 +39,10 @@ const Alerts = (props) => {
             alert.error(error.msg.username.join());
         }
         if (error.msg.coordinates) {
-            alert.error('Location with these coordinates already exists.');
+            alert.error('Location with these coordinates already exists. Try editing it on the explore page.');
+        }
+        if (error.msg.latlon) {
+            alert.error(error.msg.latlon);
         }
 
     }, [props.error]);

@@ -65,6 +65,29 @@ const ArcadeDetails = (props) => {
                                             {/* <a href="#" className="btn btn-primary">Go somewhere</a> */}
                                         </div>
                                     )}
+                                    {details.machines?.map(m => 
+                                        <div className="card border-success m-3 p-3" key={m.id}>
+                                            <h5 className="card-title text-success">{m.name}</h5>
+                                            <ul className="list-group">
+                                                <li className="list-group-item">
+                                                    <h6 className="text-dark font-weight-bold d-inline">Manufacturer:  </h6> 
+                                                    <h6 className="d-inline font-weight-normal text-muted">{m.manufacturer}</h6>
+                                                </li>
+                                                {m.condition && <li className="list-group-item">
+                                                    <h6 className="text-dark font-weight-bold d-inline">Condition:  </h6> 
+                                                    <h6 className="d-inline font-weight-normal text-muted">{m.condition}</h6>
+                                                </li>}
+                                                <li className="list-group-item">
+                                                    <h6 className="text-dark font-weight-bold d-inline">Date submitted:  </h6> 
+                                                    <h6 className="d-inline font-weight-normal text-muted">{m.created_at}</h6>
+                                                </li>
+                                                <li className="list-group-item">
+                                                    <h6 className="text-dark font-weight-bold d-inline">IPDB Link:  </h6> 
+                                                    <h6 className="d-inline font-weight-normal"><a href={m.ipdb_link} target="_blank">{m.ipdb_link}</a></h6>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         )}

@@ -22,7 +22,7 @@ const Login = (props) => {
 
     if (props.isAuthenticated) {
         return (
-            <Redirect to="/" />
+            <Redirect to="/explore" />
         )
     }
 
