@@ -25,12 +25,17 @@ export const getLocationsByAddress = (address) => (dispatch, getState) =>
 
 // ADD LOCATION
 export const addLocation = (location) => (dispatch, getState) => {
-    axios.post("/api/locations/", location, tokenConfig(getState)).then(res => {
-        dispatch(createMessage({ addLocation: "Location Saved!" }));
-        // dispatch ADD_LOCATION action to the reducer
-        dispatch({
-            type: ADD_LOCATION,
-            payload: res.data
-        });
-    }).catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+    if (location.coordinates.lat == "" || location.coordinates.lon == "") {
+        dispatch(returnErrors({latlon: "Invalid latitude/longitude"}, 400));
+    }
+    else {
+        axios.post("/api/locations/", location, tokenConfig(getState)).then(res => {
+            dispatch(createMessage({ addLocation: "Location Saved!" }));
+            // dispatch ADD_LOCATION action to the reducer
+            dispatch({
+                type: ADD_LOCATION,
+                payload: res.data
+            });
+        }).catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+    }
 };
