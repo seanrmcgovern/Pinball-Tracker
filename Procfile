@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath leadmanager leadmanager.wsgi
+web: gunicorn --pythonpath pinballtracker pinballtracker.wsgi

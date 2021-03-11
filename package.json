@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode development --watch --entry ./leadmanager/frontend/src/index.js -o ./leadmanager/frontend/static/frontend/",
-    "build": "webpack --mode production --entry ./leadmanager/frontend/src/index.js -o ./leadmanager/frontend/static/frontend/"
+    "dev": "webpack --mode development --watch --entry ./pinballtracker/frontend/src/index.js -o ./pinballtracker/frontend/static/frontend/",
+    "build": "webpack --mode production --entry ./pinballtracker/frontend/src/index.js -o ./pinballtracker/frontend/static/frontend/"
   },
   "keywords": [],
   "author": "",
