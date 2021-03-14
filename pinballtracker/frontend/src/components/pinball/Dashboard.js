@@ -6,6 +6,12 @@ import Footer from '../layout/Footer';
 
 const Dashboard = () => {
 
+    const [tabValue, setTabValue] = useState(0);
+
+    const handleTabChange = (event, newValue) => {
+        setTabValue(newValue);
+    };
+
     const [isVisible, setIsVisible] = useState(false);
 
     const toggleDrawer = () => {
@@ -17,6 +23,7 @@ const Dashboard = () => {
     const [locationSearchActive, setLocationSearchActive] = useState(false);
 
     const toggleArcadeSearch = (value) => {
+        if (!value) setTabValue(0);
         setArcadeSearchActive(value);
     }
 
@@ -28,8 +35,13 @@ const Dashboard = () => {
         <div>
             <SearchBar toggleArcadeSearch={toggleArcadeSearch} toggleLocationSearch={toggleLocationSearch}/>
             <div style={{display: "flex"}}>
-                <Drawer isVisible={isVisible} toggleDrawer={toggleDrawer} arcadeSearchActive={arcadeSearchActive} locationSearchActive={locationSearchActive}/>
-                <PinballMap isVisible={isVisible} toggleDrawer={toggleDrawer}/>
+                <Drawer 
+                    isVisible={isVisible} 
+                    arcadeSearchActive={arcadeSearchActive} 
+                    locationSearchActive={locationSearchActive} 
+                    tabValue={tabValue}
+                    handleTabChange={handleTabChange}/>
+                <PinballMap isVisible={isVisible} toggleDrawer={toggleDrawer} tabValue={tabValue}/>
             </div>
             <Footer/>
         </div>

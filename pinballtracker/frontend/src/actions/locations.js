@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { createMessage, returnErrors } from "./messages";
-import { GET_LOCATIONS_BY_ADDRESS, ADD_LOCATION } from './types';
+import { GET_LOCATIONS_BY_ADDRESS, ADD_LOCATION, UPDATE_LOCATION_DETAILS } from './types';
 import { tokenConfig } from "./auth";
 
 // Pinball machine locations based off of community submissions
@@ -27,6 +27,10 @@ export const getLocationsByAddress = (address) => (dispatch, getState) =>
 export const addLocation = (location) => (dispatch, getState) => {
     if (location.coordinates.lat == "" || location.coordinates.lon == "") {
         dispatch(returnErrors({latlon: "Invalid latitude/longitude"}, 400));
+    } else if (location.coordinates.lat < -90 || location.coordinates.lat > 90) {
+        dispatch(returnErrors({latlon: "Latitude must be in the range [-90, 90]"}, 400));
+    } else if (location.coordinates.lon < -180 || location.coordinates.lon > 180) {
+        dispatch(returnErrors({latlon: "Longitude must be in the range [-180, 180]"}, 400));
     }
     else {
         axios.post("/api/locations/", location, tokenConfig(getState)).then(res => {
@@ -39,3 +43,17 @@ export const addLocation = (location) => (dispatch, getState) => {
         }).catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
     }
 };
+
+export const updateLocationDetails = (location) => (dispatch) => 
+    new Promise(function(resolve, reject) {
+        axios.put(`/api/locations/${location.id}/`, location).then((res) => {
+            dispatch({
+                type: UPDATE_LOCATION_DETAILS,
+                payload: res.data
+            });
+            resolve(res);
+        }).catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status));
+            reject(err);
+        });
+});

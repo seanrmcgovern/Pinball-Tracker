@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from 'react-redux';
 import { getArcadesByAddress } from '../../actions/arcades';
 import { getLocationsByAddress } from '../../actions/locations';
@@ -21,10 +21,14 @@ const SearchBar = (props) => {
         setAddress(e.target.value);
     };
 
+    useEffect(() => {
+        props.getLocationsByAddress(address);
+    }, []);
+
     return(
         <div className="d-inline-flex p-2">
             <form onSubmit={onSubmit}>
-                <div className="input-group" style={{width: '25vw'}}>
+                <div className="input-group" style={{width: window.innerWidth > 700 ? '25vw' : '100%'}}>
                     <input type="text" value={address} onChange={onChange} name="address" className="form-control" placeholder="Los Angeles, CA"/>
                     <div className="input-group-append">
                         <button onClick={onSubmit} className="btn btn-outline-primary" type="button">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { closeArcadeDetails } from '../../actions/arcades';
+import { openArcadeDetails, closeArcadeDetails } from '../../actions/arcades';
+import { getLocationsByAddress, updateLocationDetails } from '../../actions/locations';
 import { Transition } from 'react-transition-group'; 
 import { AppBar, Tab, Tabs, LinearProgress } from '@material-ui/core';
 import ArcadeDetails from './ArcadeDetails';
@@ -22,25 +23,18 @@ const ActivityIndicator = withStyles((theme) => ({
 
 const Drawer = (props) => {
 
-    const [tabValue, setTabValue] = useState(0);
-
-    const handleTabChange = (event, newValue) => {
-        setTabValue(newValue);
-    };
-
     const GREY = "#9E9E9E";
 
     const defaultStyle = {
         transition: `width .3s linear`,
         height: '85vh',
-        // overflow: 'auto',
         backgroundColor: "#F5F9F9",
         boxShadow: `1px 1px 5px ${GREY}`,
     };
 
     const transitionStyles = {
         entering: { width: '28vw', zIndex: 1 },
-        entered: { width: '28vw', zIndex: 1 },
+        entered: { width: window.innerWidth > 700 ? '28vw' : "100%", zIndex: 1, minWidth: "400px" },
         exiting: { width: 0, zIndex: 0 },
         exited: { width: 0, zIndex: 0 }
     };
@@ -50,6 +44,8 @@ const Drawer = (props) => {
     const closeDetails = () => {
         setDetailsOpen(false);
         props.closeArcadeDetails();
+        // fetch locations in case of edits/updates
+        props.getLocationsByAddress();
     }
 
     useEffect(() => {
@@ -62,17 +58,24 @@ const Drawer = (props) => {
                 <div 
                     style={{
                         ...defaultStyle,
-                        ...transitionStyles[state]
+                        ...transitionStyles[state],
                     }}
                 >
                     {(props.arcadeSearchActive || props.locationSearchActive) && <ActivityIndicator/>}
-                    <ArcadeDetails arcadeDetails={props.arcadeDetails} open={detailsOpen} close={closeDetails}/>
+                    <ArcadeDetails 
+                        arcadeDetails={props.arcadeDetails} 
+                        open={detailsOpen} 
+                        close={closeDetails} 
+                        updateDetails={props.openArcadeDetails}
+                        saveLocationChanges={props.updateLocationDetails} 
+                        isAuthenticated={props.auth.isAuthenticated}
+                        />
                     {!detailsOpen && (
                         <Fragment>
                             <AppBar position="sticky" color="default">
                                 <Tabs
-                                    value={tabValue}
-                                    onChange={handleTabChange}
+                                    value={props.tabValue}
+                                    onChange={props.handleTabChange}
                                     variant="fullWidth"
                                     style={{color: "#00B875", boxShadow: `1px 1px 5px ${GREY}`}}
                                     TabIndicatorProps={{style: {background: "#00B875"}}}
@@ -81,10 +84,10 @@ const Drawer = (props) => {
                                     <Tab label="Community Content" style={{textTransform: "capitalize", fontFamily: `-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"`}}/>
                                 </Tabs>
                             </AppBar>
-                            <TabContent value={tabValue} index={0}>
+                            <TabContent value={props.tabValue} index={0}>
                                 <Cards data={props.arcades.locations}/>
                             </TabContent>
-                            <TabContent value={tabValue} index={1}>
+                            <TabContent value={props.tabValue} index={1}>
                                 <Cards data={props.locations}/>
                             </TabContent>
                         </Fragment>
@@ -98,7 +101,8 @@ const Drawer = (props) => {
 const mapStateToProps = state => ({
     arcades: state.arcades.arcades,
     arcadeDetails: state.arcades.arcadeDetails,
-    locations: state.locations.locations
+    locations: state.locations.locations,
+    auth: state.auth
 });
 
-export default connect(mapStateToProps, { closeArcadeDetails })(Drawer);
+export default connect(mapStateToProps, { openArcadeDetails, closeArcadeDetails, getLocationsByAddress, updateLocationDetails })(Drawer);
