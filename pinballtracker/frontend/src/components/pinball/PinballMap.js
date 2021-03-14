@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'; 
 import { getArcadesByAddress, openArcadeDetails } from  '../../actions/arcades';
 import ReactMapboxGl, { Marker, ZoomControl, Popup } from 'react-mapbox-gl';
-import FavoriteIcon from './FavoriteIcon';
 import { GeolocateControl } from "mapbox-gl";
+import FavoriteIcon from './FavoriteIcon';
 
 const Map = ReactMapboxGl({
     accessToken:
@@ -69,7 +69,6 @@ const PinballMap = (props) => {
 
     const closePopup = () => {
         setPopupLocation();
-        props.openArcadeDetails();
     };
 
     const [hoveredMarker, setHoveredMarker] = useState();
@@ -88,22 +87,34 @@ const PinballMap = (props) => {
             >
             <button className="btn rounded-left shadow" style={{position: "absolute", top: 5, left: -5, backgroundColor: "#F5F9F9", opacity: 0.75}} onClick={onPress}>{props.isVisible ? CaretLeft : CaretRight}</button>
             <ZoomControl style={{marginTop: 40}}/>
-            {props.arcades?.locations?.map(loc => (
+            {props.tabValue == 0 && props.arcades?.locations?.map(loc => (
                 <Marker 
                     coordinates={[loc.lon, loc.lat]} 
                     anchor="bottom" 
                     key={loc.id} 
                     onClick={() => handleMarkerClick(loc)}
                     onMouseEnter={() => setHoveredMarker(loc.id)}
-                    onMouseLeave={() => setHoveredMarker()}
+                    onMouseLeave={() => setHoveredMarker(null)}
                     style={{cursor: "pointer", position: "absolute", zIndex: hoveredMarker == loc.id || popupLocation?.id == loc.id ? 2: 1}}>
                     <img src="https://img.icons8.com/ultraviolet/40/000000/marker.png" style={hoveredMarker == loc.id || popupLocation?.id == loc.id  ? {transform: "scale(1.2)", marginBottom: 10} : {opacity: 0.8}}/>                    
+                </Marker>
+            ))}
+            {props.tabValue == 1 && props.locations?.map(loc => (
+                <Marker 
+                    coordinates={[loc.coordinates.lon, loc.coordinates.lat]} 
+                    anchor="bottom" 
+                    key={loc.id} 
+                    onClick={() => handleMarkerClick(loc)}
+                    onMouseEnter={() => setHoveredMarker(loc.id)}
+                    onMouseLeave={() => setHoveredMarker(null)}
+                    style={{cursor: "pointer", position: "absolute", zIndex: hoveredMarker == loc.id || popupLocation?.id == loc.id ? 2: 1}}>
+                    <img src={require('../../images/communityPin.png')} style={hoveredMarker == loc.id || popupLocation?.id == loc.id  ? {transform: "scale(1.2)", marginBottom: 10, fontSize: 10} : {opacity: 0.8, fontSize: 10}}/>                    
                 </Marker>
             ))}
             {popupLocation && (
                 <Popup
                     style={{width: "400px"}}
-                    coordinates={[popupLocation.lon, popupLocation.lat]}
+                    coordinates={[popupLocation.lon || popupLocation.coordinates.lon, popupLocation.lat || popupLocation.coordinates.lat]}
                     anchor="bottom"
                     offset={25}
                 >
@@ -116,8 +127,8 @@ const PinballMap = (props) => {
                             <h5 className="card-text m-0"><small className="text-muted">{popupLocation.street}</small></h5>
                             <p className="lead text-dark m-1"><small>{popupLocation.description}</small></p>
                             <div className="d-inline-flex justify-content-left">
-                                <button onClick={() => openDetails(popupLocation)} type="button" class="btn btn-success rounded p-1 pl-2 pr-2 m-0 mr-1">Details</button>
-                                <button onClick={closePopup} type="button" class="btn btn-secondary rounded p-1 pl-2 pr-2 m-0">Close</button>
+                                <button onClick={() => openDetails(popupLocation)} type="button" className="btn btn-success rounded p-1 pl-2 pr-2 m-0 mr-1">Details</button>
+                                <button onClick={closePopup} type="button" className="btn btn-secondary rounded p-1 pl-2 pr-2 m-0">Close</button>
                             </div>
                         </div>
                     </div>
@@ -128,7 +139,8 @@ const PinballMap = (props) => {
 };
 
 const mapStateToProps = state => ({
-    arcades: state.arcades.arcades
+    arcades: state.arcades.arcades,
+    locations: state.locations.locations
 });
 
 export default connect(mapStateToProps, { getArcadesByAddress, openArcadeDetails })(PinballMap);
