@@ -1,10 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { Transition } from 'react-transition-group'; 
 import { BsX, BsPencil, BsStopFill } from "react-icons/bs";
 import { FaSave } from "react-icons/fa";
+import { HiPlus } from "react-icons/hi";
 import { usStates } from '../common/UnitedStates';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+    inputRoot: {
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#00B875"
+      },
+      "&:hover .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#00B875"
+      },
+      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#00B875"
+      }
+    }
+}));
+
+const labelStyles = makeStyles((theme) => ({
+    label: {
+        '&.Mui-focused': {
+          color: "#00B875"
+        }
+    }
+}));
 
 const ArcadeDetails = (props) => {
+    const classes = useStyles();
+    const inputLabelClasses = labelStyles();
 
     const capitalize = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
@@ -64,6 +92,8 @@ const ArcadeDetails = (props) => {
 
     const closeDetails = () => {
         setEditActive(false);
+        setAddingMachine(false);
+        // $('#machineInputs').collapse('toggle');
         props.close();
     };
 
@@ -84,6 +114,14 @@ const ArcadeDetails = (props) => {
         }
     }, [details]);
 
+    const [addingMachine, setAddingMachine] = useState(false);
+    const [selectedMachine, setSelectedMachine] = useState(null);
+
+    const toggleMachineInputs = () => {
+        setAddingMachine(!addingMachine);
+        $('#machineInputs').collapse('toggle');
+    }
+
     return (
         <Transition in={props.open} timeout={100}>
             {state => (
@@ -100,16 +138,25 @@ const ArcadeDetails = (props) => {
                                         <p className="card-text m-0 p-0"><small className="text-muted">{details.street}, {details.city}, {details.state}</small></p>
                                         {details.website && <a target='__blank__' href={details.website} className="card-text m-0 p-0"><small>{details.website}</small></a>}
                                     </div>
-                                    <div className="d-flex align-items-end flex-column ml-auto p-2">
-                                        {editActive && (
-                                            <button onClick={saveChanges} type="button" className="btn btn-outline-primary btn-circle ml-auto p-1 mb-1">
-                                                <FaSave style={{fontSize: 20}}/>
+                                    {isCustomLocation && props.isAuthenticated && (
+                                        <div className="pt-2 mr-1"> 
+                                            <button onClick={toggleMachineInputs} disabled={editActive} type="button" className="btn btn-outline-primary btn-circle ml-auto p-1 mb-1">
+                                                {addingMachine ? <BsStopFill style={{fontsize: 20, margin: 2}}/> : <HiPlus style={{fontSize: 20}}/>}
                                             </button>
-                                        )}
+                                        </div>
+                                    )}
+                                    <div className="d-flex align-items-end flex-column ml-0 pt-2">
                                         {isCustomLocation && props.isAuthenticated && (
-                                            <button onClick={toggleInputs} type="button" className="btn btn-outline-primary btn-circle ml-auto p-1 mb-1">
-                                                {editActive ? <BsStopFill style={{fontSize: 20}}/> : <BsPencil style={{fontSize: 20}}/>}
-                                            </button>
+                                            <Fragment>
+                                                {editActive && (
+                                                    <button onClick={saveChanges} type="button" className="btn btn-outline-primary btn-circle ml-auto p-1 mb-1">
+                                                        <FaSave style={{fontSize: 20}}/>
+                                                    </button>
+                                                )}
+                                                <button onClick={toggleInputs} disabled={addingMachine} type="button" className="btn btn-outline-primary btn-circle ml-auto p-1 mb-1">
+                                                    {editActive ? <BsStopFill style={{fontSize: 20}}/> : <BsPencil style={{fontSize: 20}}/>}
+                                                </button>
+                                            </Fragment>
                                         )}
                                         <button onClick={closeDetails} type="button" className="btn btn-outline-secondary btn-circle ml-auto p-1">
                                             <BsX style={{fontSize: 20}}/>
@@ -194,6 +241,27 @@ const ArcadeDetails = (props) => {
                                             </form>
                                         </div>
                                     </div>
+                                    <div className="collapse" id="machineInputs">
+                                        <div className="card card-body">
+                                            <form>
+                                                <div className="form-group">
+                                                    <p className="m-0 mb-2">Select a machine, or start typing for suggestions</p>
+                                                    <Autocomplete
+                                                        value={selectedMachine}
+                                                        onChange={(event, newValue) => {
+                                                            setSelectedMachine(newValue);
+                                                        }}
+                                                        classes={classes}
+                                                        freeSolo
+                                                        options={props.machines}
+                                                        getOptionLabel={(option) => option.name}
+                                                        style={{ width: 300 }}
+                                                        renderInput={(params) => <TextField {...params} label="New Machine" variant="outlined" InputLabelProps={{className: inputLabelClasses.label}} />}
+                                                    />
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                     {details.location_machine_xrefs?.map(m => 
                                         <div className="card border-success m-3 p-3" key={m.machine.id}>
                                             <h5 className="card-title text-success">{m.machine.name}</h5>
@@ -217,7 +285,7 @@ const ArcadeDetails = (props) => {
                                             </ul>
                                         </div>
                                     )}
-                                    {details.machines?.map(m => 
+                                    {/* {details.machines?.map(m => 
                                         <div className="card border-success m-3 p-3" key={m.id}>
                                             <h5 className="card-title text-success">{m.name}</h5>
                                             <ul className="list-group">
@@ -239,7 +307,7 @@ const ArcadeDetails = (props) => {
                                                 </li>
                                             </ul>
                                         </div>
-                                    )}
+                                    )} */}
                                     <div style={{height: "100px"}}/>
                                 </div>
                             </div>

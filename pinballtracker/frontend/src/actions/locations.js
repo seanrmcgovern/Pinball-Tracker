@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { createMessage, returnErrors } from "./messages";
-import { GET_LOCATIONS_BY_ADDRESS, ADD_LOCATION, UPDATE_LOCATION_DETAILS } from './types';
+import { GET_LOCATIONS_BY_ADDRESS, ADD_LOCATION, UPDATE_LOCATION_DETAILS, GET_MACHINES } from './types';
 import { tokenConfig } from "./auth";
 
 // Pinball machine locations based off of community submissions
@@ -57,3 +57,14 @@ export const updateLocationDetails = (location) => (dispatch) =>
             reject(err);
         });
 });
+
+export const getMachines = () => (dispatch) => {
+    axios.get("https://pinballmap.com/api/v1/machines.json").then((res) => {
+        dispatch({
+            type: GET_MACHINES,
+            payload: res.data
+        });
+    }).catch(err => {
+        dispatch(returnErrors(err.response.data, err.response.status));
+    });
+};
