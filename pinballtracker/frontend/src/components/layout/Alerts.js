@@ -59,6 +59,9 @@ const Alerts = (props) => {
             if (message.passwordsDoNotMatch) {
                 alert.error(message.passwordsDoNotMatch);
             }
+            if (message.locationChanges) {
+                alert.success(message.locationChanges);
+            }
         }
     }), [props.message];
 

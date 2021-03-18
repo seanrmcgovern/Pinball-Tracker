@@ -1,8 +1,9 @@
-import { GET_LOCATIONS_BY_ADDRESS, ADD_LOCATION, UPDATE_LOCATION_DETAILS } from '../actions/types.js';
+import { GET_LOCATIONS_BY_ADDRESS, ADD_LOCATION, UPDATE_LOCATION_DETAILS, GET_MACHINES } from '../actions/types.js';
 
 const initialState = {
     locations: [],
-    locationDetails: null
+    locationDetails: null,
+    machines: []
 };
 
 export default function(state = initialState, action) {
@@ -21,6 +22,11 @@ export default function(state = initialState, action) {
             return {
                 ...state,
             };
+        case GET_MACHINES:
+            return {
+                ...state,
+                machines: action.payload
+            }
         default:
             return state;
     }

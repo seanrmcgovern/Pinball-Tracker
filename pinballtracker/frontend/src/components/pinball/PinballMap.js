@@ -85,7 +85,7 @@ const PinballMap = (props) => {
             fitBounds={bounds}
             onStyleLoad={handleStyleLoad}
             >
-            <button className="btn rounded-left shadow" style={{position: "absolute", top: 5, left: -5, backgroundColor: "#F5F9F9", opacity: 0.75}} onClick={onPress}>{props.isVisible ? CaretLeft : CaretRight}</button>
+            <button className="btn rounded-left shadow" style={{position: "absolute", top: 5, left: -5, backgroundColor: "#F5F9F9", opacity: 0.75, borderWidth: 1, borderColor: "#00B875"}} onClick={onPress}>{props.isVisible ? CaretLeft : CaretRight}</button>
             <ZoomControl style={{marginTop: 40}}/>
             {props.tabValue == 0 && props.arcades?.locations?.map(loc => (
                 <Marker 

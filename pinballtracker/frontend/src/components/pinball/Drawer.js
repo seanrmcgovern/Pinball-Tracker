@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { openArcadeDetails, closeArcadeDetails } from '../../actions/arcades';
-import { getLocationsByAddress, updateLocationDetails } from '../../actions/locations';
+import { getLocationsByAddress, updateLocationDetails, getMachines } from '../../actions/locations';
 import { Transition } from 'react-transition-group'; 
 import { AppBar, Tab, Tabs, LinearProgress } from '@material-ui/core';
 import ArcadeDetails from './ArcadeDetails';
@@ -52,6 +52,10 @@ const Drawer = (props) => {
         setDetailsOpen(props.arcadeDetails != null);
     }, [props.arcadeDetails]);
 
+    useEffect(() => {
+        props.getMachines();
+    }, []);
+
     return (
         <Transition in={props.isVisible} timeout={300}>
             {state => (
@@ -67,8 +71,9 @@ const Drawer = (props) => {
                         open={detailsOpen} 
                         close={closeDetails} 
                         updateDetails={props.openArcadeDetails}
-                        saveLocationChanges={props.updateLocationDetails} 
+                        updateLocationDetails={props.updateLocationDetails} 
                         isAuthenticated={props.auth.isAuthenticated}
+                        machines={props.machines}
                         />
                     {!detailsOpen && (
                         <Fragment>
@@ -102,7 +107,8 @@ const mapStateToProps = state => ({
     arcades: state.arcades.arcades,
     arcadeDetails: state.arcades.arcadeDetails,
     locations: state.locations.locations,
+    machines: state.locations.machines.machines,
     auth: state.auth
 });
 
-export default connect(mapStateToProps, { openArcadeDetails, closeArcadeDetails, getLocationsByAddress, updateLocationDetails })(Drawer);
+export default connect(mapStateToProps, { openArcadeDetails, closeArcadeDetails, getLocationsByAddress, updateLocationDetails, getMachines })(Drawer);

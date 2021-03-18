@@ -7,7 +7,12 @@ from .serializers import LocationSerializer
 
 
 class LocationViewSet(viewsets.ModelViewSet):
-    # allow all users to see the community submitted locations
+    # allow all users to GET the community submitted locations
+    # restrict POST, PUT, and DELETE to authenticated users
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly
+    ]
+
     queryset = Location.objects.all()
 
     serializer_class = LocationSerializer
