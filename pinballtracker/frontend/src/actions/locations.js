@@ -34,8 +34,9 @@ export const addLocation = (location) => (dispatch, getState) => {
     }
     else {
         axios.post("/api/locations/", location, tokenConfig(getState)).then(res => {
+            // dispatch message to the messages reducer
             dispatch(createMessage({ addLocation: "Location Saved!" }));
-            // dispatch ADD_LOCATION action to the reducer
+            // dispatch ADD_LOCATION action to the locations reducer
             dispatch({
                 type: ADD_LOCATION,
                 payload: res.data
@@ -44,9 +45,10 @@ export const addLocation = (location) => (dispatch, getState) => {
     }
 };
 
-export const updateLocationDetails = (location) => (dispatch) => 
+export const updateLocationDetails = (location) => (dispatch, getState) => 
     new Promise(function(resolve, reject) {
-        axios.put(`/api/locations/${location.id}/`, location).then((res) => {
+        axios.put(`/api/locations/${location.id}/`, location, tokenConfig(getState)).then((res) => {
+            dispatch(createMessage({ locationChanges: "Changes Saved!" }));
             dispatch({
                 type: UPDATE_LOCATION_DETAILS,
                 payload: res.data
@@ -68,3 +70,4 @@ export const getMachines = () => (dispatch) => {
         dispatch(returnErrors(err.response.data, err.response.status));
     });
 };
+

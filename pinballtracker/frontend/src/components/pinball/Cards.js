@@ -13,7 +13,7 @@ const Cards = (props) => {
                 <div 
                     className="card m-3" 
                     key={loc.id} 
-                    onClick={() => props.openArcadeDetails(loc)} // format the location object to work for both arcades and custom locations
+                    onClick={() => props.openArcadeDetails(loc)}
                     onMouseEnter={() => setHoveredCard(loc.id)}
                     onMouseLeave={() => setHoveredCard(null)}
                     style={{borderColor: hoveredCard == loc.id ? "#00B875" : "", borderWidth: 3, cursor: hoveredCard == loc.id ? "pointer" : "auto"}}
@@ -22,12 +22,17 @@ const Cards = (props) => {
                         <div className="card-body">
                             <h5 className="card-title text-primary m-0">{loc.name}</h5>
                             <p className="card-text m-0"><small className="text-muted">{loc.street}</small></p>
-                            <p className="card-text">{loc.description}</p>
-                            {/* // number of machines
-                            // rating system */}
+                            <h6 className="card-text font-weight-normal">{loc.description}</h6>
                         </div>
                 </div>
             ))}
+            {!props.data && (
+                <div className="card m-3" >
+                    <div className="card-body">
+                        <h6 className="card-text text-muted">Enter a city or address to search for locations near you</h6>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

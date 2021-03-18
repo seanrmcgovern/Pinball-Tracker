@@ -1,12 +1,13 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState, useRef, Fragment } from 'react';
+import MachineList from './MachineList';
 import { Transition } from 'react-transition-group'; 
 import { BsX, BsPencil, BsStopFill } from "react-icons/bs";
-import { FaSave } from "react-icons/fa";
-import { HiPlus } from "react-icons/hi";
+import { FaSave } from 'react-icons/fa';
+import { HiPlus } from 'react-icons/hi';
 import { usStates } from '../common/UnitedStates';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     inputRoot: {
@@ -33,6 +34,8 @@ const labelStyles = makeStyles((theme) => ({
 const ArcadeDetails = (props) => {
     const classes = useStyles();
     const inputLabelClasses = labelStyles();
+
+    const detailsRef = useRef(null);
 
     const capitalize = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
@@ -61,6 +64,12 @@ const ArcadeDetails = (props) => {
 
     const [editActive, setEditActive] = useState(false);
     const toggleInputs = () => { 
+        if (!editActive) {
+            detailsRef.current.scroll({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
         if (editActive) {
             setModifiedLocation({ 
                 ...modifiedLocation, 
@@ -82,7 +91,7 @@ const ArcadeDetails = (props) => {
     const saveChanges = () => {
         const coors = {lat: modifiedLocation.lat, lon: modifiedLocation.lon};
         const updatedLocation = { ...details, ...modifiedLocation, coordinates: coors };
-        props.saveLocationChanges(updatedLocation).then((res) => {
+        props.updateLocationDetails(updatedLocation).then((res) => {
             if (res.status == 200) {
                 props.updateDetails(updatedLocation);
             }
@@ -93,7 +102,6 @@ const ArcadeDetails = (props) => {
     const closeDetails = () => {
         setEditActive(false);
         setAddingMachine(false);
-        // $('#machineInputs').collapse('toggle');
         props.close();
     };
 
@@ -109,7 +117,8 @@ const ArcadeDetails = (props) => {
                 description: details?.description || "", 
                 website: details?.website || "",
                 lat: details?.coordinates.lat,
-                lon: details?.coordinates.lon
+                lon: details?.coordinates.lon,
+                machines: details?.machines
             });
         }
     }, [details]);
@@ -118,9 +127,41 @@ const ArcadeDetails = (props) => {
     const [selectedMachine, setSelectedMachine] = useState(null);
 
     const toggleMachineInputs = () => {
+        if (!addingMachine) {
+            detailsRef.current.scroll({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
         setAddingMachine(!addingMachine);
+        setSelectedMachine(null);
         $('#machineInputs').collapse('toggle');
-    }
+    };
+
+    const saveMachine = (e) => {
+        e.preventDefault();
+        const coors = {lat: modifiedLocation.lat, lon: modifiedLocation.lon};
+        // update the locations "machines" field to append the new machine
+        const updatedMachine = {id: selectedMachine.id, name: selectedMachine.name, year: selectedMachine.year, manufacturer: selectedMachine.manufacturer, ipdb_link: selectedMachine.ipdb_link, created_at: new Date() };
+        const updatedLocation = { ...modifiedLocation, machines: [...modifiedLocation.machines, updatedMachine], coordinates: coors};
+        props.updateLocationDetails(updatedLocation).then((res) => {
+            if (res.status == 200) {
+                props.updateDetails(updatedLocation);
+            }
+        });
+        toggleMachineInputs();
+    };
+
+    const deleteMachine = (id) => {
+        const coors = {lat: modifiedLocation.lat, lon: modifiedLocation.lon};
+        const machines = modifiedLocation.machines.filter(mach => mach.id != id);
+        const updatedLocation = {...modifiedLocation, machines: machines, coordinates: coors};
+        props.updateLocationDetails(updatedLocation).then((res) => {
+            if (res.status == 200) {
+                props.updateDetails(updatedLocation);
+            }
+        });
+    };
 
     return (
         <Transition in={props.open} timeout={100}>
@@ -163,7 +204,7 @@ const ArcadeDetails = (props) => {
                                         </button>
                                     </div>
                                 </div>
-                                <div style={{overflow: "auto", height: "75vh"}}>
+                                <div style={{overflow: "auto", height: "75vh"}} ref={detailsRef}>
                                     <div className="collapse" id="collapseInputs">
                                         <div className="card card-body">
                                             <form>
@@ -243,9 +284,9 @@ const ArcadeDetails = (props) => {
                                     </div>
                                     <div className="collapse" id="machineInputs">
                                         <div className="card card-body">
-                                            <form>
+                                            <form onSubmit={saveMachine}>
                                                 <div className="form-group">
-                                                    <p className="m-0 mb-2">Select a machine, or start typing for suggestions</p>
+                                                    <h6 className="font-weight-normal m-0 mb-2" style={{fontSize: 15}}>Select a machine, or start typing for suggestions</h6>
                                                     <Autocomplete
                                                         value={selectedMachine}
                                                         onChange={(event, newValue) => {
@@ -258,56 +299,17 @@ const ArcadeDetails = (props) => {
                                                         style={{ width: 300 }}
                                                         renderInput={(params) => <TextField {...params} label="New Machine" variant="outlined" InputLabelProps={{className: inputLabelClasses.label}} />}
                                                     />
+                                                    <button disabled={selectedMachine == null} type="submit" className="btn btn-primary m-1">Submit</button>
+                                                    <button onClick={toggleMachineInputs} type="reset" className="btn btn-secondary m-1">Cancel</button>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
-                                    {details.location_machine_xrefs?.map(m => 
-                                        <div className="card border-success m-3 p-3" key={m.machine.id}>
-                                            <h5 className="card-title text-success">{m.machine.name}</h5>
-                                            <ul className="list-group">
-                                                <li className="list-group-item">
-                                                    <h6 className="text-dark font-weight-bold d-inline">Manufacturer:  </h6> 
-                                                    <h6 className="d-inline font-weight-normal text-muted">{m.machine.manufacturer}</h6>
-                                                </li>
-                                                {m.condition && <li className="list-group-item">
-                                                    <h6 className="text-dark font-weight-bold d-inline">Condition:  </h6> 
-                                                    <h6 className="d-inline font-weight-normal text-muted">{m.condition}</h6>
-                                                </li>}
-                                                <li className="list-group-item">
-                                                    <h6 className="text-dark font-weight-bold d-inline">Date submitted:  </h6> 
-                                                    <h6 className="d-inline font-weight-normal text-muted">{m.created_at}</h6>
-                                                </li>
-                                                <li className="list-group-item">
-                                                    <h6 className="text-dark font-weight-bold d-inline">IPDB Link:  </h6> 
-                                                    <h6 className="d-inline font-weight-normal"><a href={m.machine.ipdb_link} target="_blank">{m.machine.ipdb_link}</a></h6>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                    {isCustomLocation ? (
+                                        <MachineList machines={details.machines} isAuthenticated={props.isAuthenticated} isCustomLocation={true} deleteMachine={deleteMachine}/>
+                                    ) : (
+                                        <MachineList machines={details.location_machine_xrefs.map(m => ({...m.machine, condition: m.condition, created_at: m.created_at}))} isAuthenticated={props.isAuthenticated} isCustomLocation={false}/>
                                     )}
-                                    {/* {details.machines?.map(m => 
-                                        <div className="card border-success m-3 p-3" key={m.id}>
-                                            <h5 className="card-title text-success">{m.name}</h5>
-                                            <ul className="list-group">
-                                                <li className="list-group-item">
-                                                    <h6 className="text-dark font-weight-bold d-inline">Manufacturer:  </h6> 
-                                                    <h6 className="d-inline font-weight-normal text-muted">{m.manufacturer}</h6>
-                                                </li>
-                                                {m.condition && <li className="list-group-item">
-                                                    <h6 className="text-dark font-weight-bold d-inline">Condition:  </h6> 
-                                                    <h6 className="d-inline font-weight-normal text-muted">{m.condition}</h6>
-                                                </li>}
-                                                <li className="list-group-item">
-                                                    <h6 className="text-dark font-weight-bold d-inline">Date submitted:  </h6> 
-                                                    <h6 className="d-inline font-weight-normal text-muted">{m.created_at}</h6>
-                                                </li>
-                                                <li className="list-group-item">
-                                                    <h6 className="text-dark font-weight-bold d-inline">IPDB Link:  </h6> 
-                                                    <h6 className="d-inline font-weight-normal"><a href={m.ipdb_link} target="_blank">{m.ipdb_link}</a></h6>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    )} */}
                                     <div style={{height: "100px"}}/>
                                 </div>
                             </div>

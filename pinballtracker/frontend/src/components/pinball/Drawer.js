@@ -71,7 +71,7 @@ const Drawer = (props) => {
                         open={detailsOpen} 
                         close={closeDetails} 
                         updateDetails={props.openArcadeDetails}
-                        saveLocationChanges={props.updateLocationDetails} 
+                        updateLocationDetails={props.updateLocationDetails} 
                         isAuthenticated={props.auth.isAuthenticated}
                         machines={props.machines}
                         />
