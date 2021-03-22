@@ -2,6 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { openArcadeDetails, closeArcadeDetails } from '../../actions/arcades';
 import { getLocationsByAddress, updateLocationDetails, getMachines } from '../../actions/locations';
+import { getBookmarks, addBookmark, deleteBookmark } from '../../actions/bookmarks';
 import { Transition } from 'react-transition-group'; 
 import { AppBar, Tab, Tabs, LinearProgress } from '@material-ui/core';
 import ArcadeDetails from './ArcadeDetails';
@@ -56,6 +57,12 @@ const Drawer = (props) => {
         props.getMachines();
     }, []);
 
+    useEffect(() => {
+        if (props.auth.isAuthenticated) {
+            props.getBookmarks();
+        }
+    }, [props.auth]);
+
     return (
         <Transition in={props.isVisible} timeout={300}>
             {state => (
@@ -90,10 +97,20 @@ const Drawer = (props) => {
                                 </Tabs>
                             </AppBar>
                             <TabContent value={props.tabValue} index={0}>
-                                <Cards data={props.arcades.locations}/>
+                                <Cards 
+                                    data={props.arcades.locations?.map(loc => ({...loc, coordinates: {lat: loc.lat, lon: loc.lon}}))} 
+                                    isAuthenticated={props.auth.isAuthenticated}
+                                    bookmarks={props.bookmarks}
+                                    addBookmark={props.addBookmark} 
+                                    deleteBookmark={props.deleteBookmark}/>
                             </TabContent>
                             <TabContent value={props.tabValue} index={1}>
-                                <Cards data={props.locations}/>
+                                <Cards 
+                                    data={props.locations} 
+                                    isAuthenticated={props.auth.isAuthenticated}
+                                    bookmarks={props.bookmarks}
+                                    addBookmark={props.addBookmark} 
+                                    deleteBookmark={props.deleteBookmark}/>
                             </TabContent>
                         </Fragment>
                     )}
@@ -108,7 +125,8 @@ const mapStateToProps = state => ({
     arcadeDetails: state.arcades.arcadeDetails,
     locations: state.locations.locations,
     machines: state.locations.machines.machines,
-    auth: state.auth
+    auth: state.auth,
+    bookmarks: state.bookmarks.bookmarks
 });
 
-export default connect(mapStateToProps, { openArcadeDetails, closeArcadeDetails, getLocationsByAddress, updateLocationDetails, getMachines })(Drawer);
+export default connect(mapStateToProps, { openArcadeDetails, closeArcadeDetails, getLocationsByAddress, updateLocationDetails, getMachines, getBookmarks, addBookmark, deleteBookmark })(Drawer);

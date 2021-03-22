@@ -2,7 +2,6 @@ import { GET_LOCATIONS_BY_ADDRESS, ADD_LOCATION, UPDATE_LOCATION_DETAILS, GET_MA
 
 const initialState = {
     locations: [],
-    locationDetails: null,
     machines: []
 };
 

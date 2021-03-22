@@ -11,7 +11,7 @@ const Footer = () => {
                     </a>
                 </div>
                 <div className="navbar-text pull-left">
-                    <a href="https://icons8.com/icon/42828/marker" target="_blank">Marker icon by Icons8</a>
+                    <a href="https://icons8.com/icon/42828/marker" target="_blank">Icons by Icons8</a>
                 </div>
             </div>
         </footer>

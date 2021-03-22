@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import MachineList from './MachineList';
 import { Transition } from 'react-transition-group'; 
 import { BsX, BsPencil, BsStopFill } from "react-icons/bs";
@@ -43,7 +44,7 @@ const ArcadeDetails = (props) => {
 
     const details = props.arcadeDetails;
 
-    const isCustomLocation = props.arcadeDetails?.coordinates != null;
+    const isCustomLocation = props.arcadeDetails?.machines != null;
 
     const defaultStyle = {
         transition: `width .3s linear`,
@@ -179,24 +180,42 @@ const ArcadeDetails = (props) => {
                                         <p className="card-text m-0 p-0"><small className="text-muted">{details.street}, {details.city}, {details.state}</small></p>
                                         {details.website && <a target='__blank__' href={details.website} className="card-text m-0 p-0"><small>{details.website}</small></a>}
                                     </div>
-                                    {isCustomLocation && props.isAuthenticated && (
+                                    {isCustomLocation && (
                                         <div className="pt-2 mr-1"> 
-                                            <button onClick={toggleMachineInputs} disabled={editActive} type="button" className="btn btn-outline-primary btn-circle ml-auto p-1 mb-1">
-                                                {addingMachine ? <BsStopFill style={{fontsize: 20, margin: 2}}/> : <HiPlus style={{fontSize: 20}}/>}
-                                            </button>
+                                            {props.isAuthenticated ? (
+                                                <button onClick={toggleMachineInputs} disabled={editActive} type="button" className="btn btn-outline-primary btn-circle ml-auto p-1 mb-1">
+                                                    {addingMachine ? <BsStopFill style={{fontsize: 20, margin: 2}}/> : <HiPlus style={{fontSize: 20}}/>}
+                                                </button>
+                                            ) : (
+                                                <Link to="/login">
+                                                    <button type="button" className="btn btn-outline-primary btn-circle ml-auto p-1 mb-1">
+                                                        <HiPlus style={{fontSize: 20}}/>
+                                                    </button>
+                                                </Link>
+                                            )}
                                         </div>
                                     )}
                                     <div className="d-flex align-items-end flex-column ml-0 pt-2">
-                                        {isCustomLocation && props.isAuthenticated && (
+                                        {isCustomLocation && (
                                             <Fragment>
-                                                {editActive && (
-                                                    <button onClick={saveChanges} type="button" className="btn btn-outline-primary btn-circle ml-auto p-1 mb-1">
-                                                        <FaSave style={{fontSize: 20}}/>
-                                                    </button>
+                                                {props.isAuthenticated ? (
+                                                    <Fragment>
+                                                        {editActive && (
+                                                            <button onClick={saveChanges} type="button" className="btn btn-outline-primary btn-circle ml-auto p-1 mb-1">
+                                                                <FaSave style={{fontSize: 20}}/>
+                                                            </button>
+                                                        )}
+                                                        <button onClick={toggleInputs} disabled={addingMachine} type="button" className="btn btn-outline-primary btn-circle ml-auto p-1 mb-1">
+                                                            {editActive ? <BsStopFill style={{fontSize: 20}}/> : <BsPencil style={{fontSize: 20}}/>}
+                                                        </button>
+                                                    </Fragment>
+                                                ) : (
+                                                    <Link to="/login">
+                                                        <button type="button" className="btn btn-outline-primary btn-circle ml-auto p-1 mb-1">
+                                                            <BsPencil style={{fontSize: 20}}/>
+                                                        </button>
+                                                    </Link>
                                                 )}
-                                                <button onClick={toggleInputs} disabled={addingMachine} type="button" className="btn btn-outline-primary btn-circle ml-auto p-1 mb-1">
-                                                    {editActive ? <BsStopFill style={{fontSize: 20}}/> : <BsPencil style={{fontSize: 20}}/>}
-                                                </button>
                                             </Fragment>
                                         )}
                                         <button onClick={closeDetails} type="button" className="btn btn-outline-secondary btn-circle ml-auto p-1">
@@ -205,106 +224,110 @@ const ArcadeDetails = (props) => {
                                     </div>
                                 </div>
                                 <div style={{overflow: "auto", height: "75vh"}} ref={detailsRef}>
-                                    <div className="collapse" id="collapseInputs">
-                                        <div className="card card-body">
-                                            <form>
-                                                <div className="form-group required">
-                                                    <label className="control-label m-0">Name</label>
-                                                    <input
-                                                        className="form-control form-control-sm"
-                                                        type="text"
-                                                        name="name"
-                                                        onChange={handleLocationChange}
-                                                        value={modifiedLocation?.name}/>
+                                    {props.isAuthenticated && (
+                                        <Fragment>
+                                            <div className="collapse" id="collapseInputs">
+                                                <div className="card card-body">
+                                                    <form>
+                                                        <div className="form-group required">
+                                                            <label className="control-label m-0">Name</label>
+                                                            <input
+                                                                className="form-control form-control-sm"
+                                                                type="text"
+                                                                name="name"
+                                                                onChange={handleLocationChange}
+                                                                value={modifiedLocation?.name}/>
+                                                        </div>
+                                                        <div className="form-group required">
+                                                            <label className="control-label m-0">Street</label>
+                                                            <input
+                                                                className="form-control form-control-sm"
+                                                                type="text"
+                                                                name="street"
+                                                                onChange={handleLocationChange}
+                                                                value={modifiedLocation?.street}/>
+                                                        </div>
+                                                        <div className="form-group required">
+                                                            <label className="control-label m-0">City</label>
+                                                            <input
+                                                                className="form-control form-control-sm"
+                                                                type="text"
+                                                                name="city"
+                                                                onChange={handleLocationChange}
+                                                                value={modifiedLocation?.city}/>
+                                                        </div>
+                                                        <div className="form-group">
+                                                            <label className="m-0">State</label>
+                                                            <select value={modifiedLocation?.state} className="form-control form-control-sm" name="state" onChange={handleLocationChange}>
+                                                                {usStates.map(state => (
+                                                                    <option value={state.abbreviation} key={state.abbreviation}>{capitalize(state.name.toLowerCase())}</option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
+                                                        <div className="form-group required">
+                                                            <label className="control-label m-0">Latitude</label>
+                                                            <input
+                                                                className="form-control form-control-sm"
+                                                                type="text"
+                                                                name="lat"
+                                                                onChange={handleLocationChange}
+                                                                value={modifiedLocation?.lat}/>
+                                                        </div>
+                                                        <div className="form-group required">
+                                                            <label className="control-label m-0">Longitude</label>
+                                                            <input
+                                                                className="form-control form-control-sm"
+                                                                type="text"
+                                                                name="lon"
+                                                                onChange={handleLocationChange}
+                                                                value={modifiedLocation?.lon}/>
+                                                        </div>
+                                                        <div className="form-group">
+                                                            <label className="control-label m-0">Description</label>
+                                                            <input
+                                                                className="form-control form-control-sm"
+                                                                type="text"
+                                                                name="description"
+                                                                onChange={handleLocationChange}
+                                                                value={modifiedLocation?.description}/>
+                                                        </div>
+                                                        <div className="form-group">
+                                                            <label className="control-label m-0">Website</label>
+                                                            <input
+                                                                className="form-control form-control-sm"
+                                                                type="text"
+                                                                name="website"
+                                                                onChange={handleLocationChange}
+                                                                value={modifiedLocation?.website}/>
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                                <div className="form-group required">
-                                                    <label className="control-label m-0">Street</label>
-                                                    <input
-                                                        className="form-control form-control-sm"
-                                                        type="text"
-                                                        name="street"
-                                                        onChange={handleLocationChange}
-                                                        value={modifiedLocation?.street}/>
+                                            </div>
+                                            <div className="collapse" id="machineInputs">
+                                                <div className="card card-body">
+                                                    <form onSubmit={saveMachine}>
+                                                        <div className="form-group">
+                                                            <h6 className="font-weight-normal m-0 mb-2" style={{fontSize: 15}}>Select a machine, or start typing for suggestions</h6>
+                                                            <Autocomplete
+                                                                value={selectedMachine}
+                                                                onChange={(event, newValue) => {
+                                                                    setSelectedMachine(newValue);
+                                                                }}
+                                                                classes={classes}
+                                                                freeSolo
+                                                                options={props.machines}
+                                                                getOptionLabel={(option) => option.name}
+                                                                style={{ width: 300 }}
+                                                                renderInput={(params) => <TextField {...params} label="New Machine" variant="outlined" InputLabelProps={{className: inputLabelClasses.label}} />}
+                                                            />
+                                                            <button disabled={selectedMachine == null} type="submit" className="btn btn-primary m-1">Submit</button>
+                                                            <button onClick={toggleMachineInputs} type="reset" className="btn btn-secondary m-1">Cancel</button>
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                                <div className="form-group required">
-                                                    <label className="control-label m-0">City</label>
-                                                    <input
-                                                        className="form-control form-control-sm"
-                                                        type="text"
-                                                        name="city"
-                                                        onChange={handleLocationChange}
-                                                        value={modifiedLocation?.city}/>
-                                                </div>
-                                                <div className="form-group">
-                                                    <label className="m-0">State</label>
-                                                    <select value={modifiedLocation?.state} className="form-control form-control-sm" name="state" onChange={handleLocationChange}>
-                                                        {usStates.map(state => (
-                                                            <option value={state.abbreviation} key={state.abbreviation}>{capitalize(state.name.toLowerCase())}</option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                                <div className="form-group required">
-                                                    <label className="control-label m-0">Latitude</label>
-                                                    <input
-                                                        className="form-control form-control-sm"
-                                                        type="text"
-                                                        name="lat"
-                                                        onChange={handleLocationChange}
-                                                        value={modifiedLocation?.lat}/>
-                                                </div>
-                                                <div className="form-group required">
-                                                    <label className="control-label m-0">Longitude</label>
-                                                    <input
-                                                        className="form-control form-control-sm"
-                                                        type="text"
-                                                        name="lon"
-                                                        onChange={handleLocationChange}
-                                                        value={modifiedLocation?.lon}/>
-                                                </div>
-                                                <div className="form-group">
-                                                    <label className="control-label m-0">Description</label>
-                                                    <input
-                                                        className="form-control form-control-sm"
-                                                        type="text"
-                                                        name="description"
-                                                        onChange={handleLocationChange}
-                                                        value={modifiedLocation?.description}/>
-                                                </div>
-                                                <div className="form-group">
-                                                    <label className="control-label m-0">Website</label>
-                                                    <input
-                                                        className="form-control form-control-sm"
-                                                        type="text"
-                                                        name="website"
-                                                        onChange={handleLocationChange}
-                                                        value={modifiedLocation?.website}/>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div className="collapse" id="machineInputs">
-                                        <div className="card card-body">
-                                            <form onSubmit={saveMachine}>
-                                                <div className="form-group">
-                                                    <h6 className="font-weight-normal m-0 mb-2" style={{fontSize: 15}}>Select a machine, or start typing for suggestions</h6>
-                                                    <Autocomplete
-                                                        value={selectedMachine}
-                                                        onChange={(event, newValue) => {
-                                                            setSelectedMachine(newValue);
-                                                        }}
-                                                        classes={classes}
-                                                        freeSolo
-                                                        options={props.machines}
-                                                        getOptionLabel={(option) => option.name}
-                                                        style={{ width: 300 }}
-                                                        renderInput={(params) => <TextField {...params} label="New Machine" variant="outlined" InputLabelProps={{className: inputLabelClasses.label}} />}
-                                                    />
-                                                    <button disabled={selectedMachine == null} type="submit" className="btn btn-primary m-1">Submit</button>
-                                                    <button onClick={toggleMachineInputs} type="reset" className="btn btn-secondary m-1">Cancel</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
+                                            </div>
+                                        </Fragment>
+                                    )}
                                     {isCustomLocation ? (
                                         <MachineList machines={details.machines} isAuthenticated={props.isAuthenticated} isCustomLocation={true} deleteMachine={deleteMachine}/>
                                     ) : (

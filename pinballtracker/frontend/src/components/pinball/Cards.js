@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import FavoriteIcon from './FavoriteIcon';
+import BookmarkIcon from './BookmarkIcon';
 import { connect } from 'react-redux';
 import { openArcadeDetails } from '../../actions/arcades';
 
@@ -18,15 +18,21 @@ const Cards = (props) => {
                     onMouseLeave={() => setHoveredCard(null)}
                     style={{borderColor: hoveredCard == loc.id ? "#00B875" : "", borderWidth: 3, cursor: hoveredCard == loc.id ? "pointer" : "auto"}}
                 >
-                        <FavoriteIcon/>
-                        <div className="card-body">
-                            <h5 className="card-title text-primary m-0">{loc.name}</h5>
-                            <p className="card-text m-0"><small className="text-muted">{loc.street}</small></p>
-                            <h6 className="card-text font-weight-normal">{loc.description}</h6>
-                        </div>
+                    <BookmarkIcon 
+                        isAuthenticated={props.isAuthenticated}
+                        location={loc}
+                        bookmarkId={props.bookmarks.find(b => b.coordinates.lat == loc.coordinates.lat && b.coordinates.lon == loc.coordinates.lon)?.id}
+                        isFavorite={props.bookmarks.some(b => b.coordinates.lat == loc.coordinates.lat && b.coordinates.lon == loc.coordinates.lon)} 
+                        addBookmark={props.addBookmark}
+                        deleteBookmark={props.deleteBookmark}/>
+                    <div className="card-body">
+                        <h5 className="card-title text-primary m-0">{loc.name}</h5>
+                        <p className="card-text m-0"><small className="text-muted">{loc.street}</small></p>
+                        <h6 className="card-text font-weight-normal">{loc.description}</h6>
+                    </div>
                 </div>
             ))}
-            {!props.data && (
+            {(!props.data || props.data.length == 0) && (
                 <div className="card m-3" >
                     <div className="card-body">
                         <h6 className="card-text text-muted">Enter a city or address to search for locations near you</h6>

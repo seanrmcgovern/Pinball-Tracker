@@ -41,7 +41,6 @@ const Alerts = (props) => {
         if (error.msg.latlon) {
             alert.error(error.msg.latlon);
         }
-
     }, [props.error]);
 
     useEffect(() => {
@@ -61,6 +60,12 @@ const Alerts = (props) => {
             }
             if (message.locationChanges) {
                 alert.success(message.locationChanges);
+            }
+            if (message.addBookmark) {
+                alert.success(message.addBookmark);
+            }
+            if (message.deleteBookmark) {
+                alert.success(message.deleteBookmark);
             }
         }
     }), [props.message];
