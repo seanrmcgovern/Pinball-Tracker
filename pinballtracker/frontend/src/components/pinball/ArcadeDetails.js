@@ -8,6 +8,7 @@ import { HiPlus } from 'react-icons/hi';
 import { usStates } from '../common/UnitedStates';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
+import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -228,6 +229,8 @@ const ArcadeDetails = (props) => {
                                         <Fragment>
                                             <div className="collapse" id="collapseInputs">
                                                 <div className="card card-body">
+                                                    <h5 className="card-title text-center text-muted m-1">Modify location details</h5>
+                                                    <Divider style={{marginBottom: 10}}/>
                                                     <form>
                                                         <div className="form-group required">
                                                             <label className="control-label m-0">Name</label>

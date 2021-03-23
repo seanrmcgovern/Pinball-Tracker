@@ -7,29 +7,38 @@ const SearchBar = (props) => {
 
     const SearchIcon = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
 
-    const [address, setAddress] = useState("");
+    const [filters, setFilters] = useState({
+        address: "",
+        radius: ""
+    })
+    // const [address, setAddress] = useState("");
 
     const onSubmit = (e) => {
         e.preventDefault();
+        const searchRadius = filters.radius == "" ? "25" : filters.radius;
         props.toggleArcadeSearch(true);
         props.toggleLocationSearch(true);
-        props.getArcadesByAddress(address, 25).then(() => props.toggleArcadeSearch(false));
-        props.getLocationsByAddress(address).then(() => props.toggleLocationSearch(false));
+        props.getArcadesByAddress(filters.address, searchRadius).then(() => props.toggleArcadeSearch(false));
+        props.getLocationsByAddress(filters.address).then(() => props.toggleLocationSearch(false));
     };
 
     const onChange = (e) => {
-        setAddress(e.target.value);
+        setFilters({...filters, [e.target.name]: e.target.value });
+        // setAddress(e.target.value);
     };
 
     useEffect(() => {
-        props.getLocationsByAddress(address);
+        props.getLocationsByAddress(filters.address);
     }, []);
 
     return(
         <div className="d-inline-flex p-2">
-            <form onSubmit={onSubmit}>
-                <div className="input-group" style={{width: window.innerWidth > 700 ? '25vw' : '100%'}}>
-                    <input type="text" value={address} onChange={onChange} name="address" className="form-control" placeholder="Los Angeles, CA"/>
+            <form onSubmit={onSubmit} className="d-inline-flex">
+                <div className="input-group mr-2" style={{width: window.innerWidth > 700 ? '28vw' : '100%'}}>
+                    <div class="input-group-prepend">
+                        <label class="input-group-text m-0">Address</label>
+                    </div>
+                    <input type="text" value={filters.address} onChange={onChange} name="address" className="form-control" placeholder="Los Angeles, CA"/>
                     <div className="input-group-append">
                         <button onClick={onSubmit} className="btn btn-outline-primary" type="button">
                             {SearchIcon}
@@ -37,6 +46,17 @@ const SearchBar = (props) => {
                     </div>
                 </div>
             </form>
+            <div class="input-group" style={{width: "30%"}}>
+                <div class="input-group-prepend">
+                    <label class="input-group-text m-0">Radius</label>
+                </div>
+                <input
+                    className="form-control"
+                    type="number"
+                    name="radius"
+                    onChange={onChange}
+                    value={filters.radius}/>
+            </div>
         </div>
 
     );
