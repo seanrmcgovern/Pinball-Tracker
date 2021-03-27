@@ -98,7 +98,7 @@ const Drawer = (props) => {
                             </AppBar>
                             <TabContent value={props.tabValue} index={0}>
                                 <Cards 
-                                    data={props.arcades.locations?.map(loc => ({...loc, coordinates: {lat: loc.lat, lon: loc.lon}}))} 
+                                    data={props.arcades.locations?.map(loc => ({...loc, coordinates: {lat: loc.lat, lon: loc.lon}, machines: loc.location_machine_xrefs}))} 
                                     isAuthenticated={props.auth.isAuthenticated}
                                     bookmarks={props.bookmarks}
                                     addBookmark={props.addBookmark} 

@@ -9,9 +9,8 @@ const SearchBar = (props) => {
 
     const [filters, setFilters] = useState({
         address: "",
-        radius: ""
+        radius: "25"
     })
-    // const [address, setAddress] = useState("");
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -24,7 +23,6 @@ const SearchBar = (props) => {
 
     const onChange = (e) => {
         setFilters({...filters, [e.target.name]: e.target.value });
-        // setAddress(e.target.value);
     };
 
     useEffect(() => {
@@ -32,13 +30,10 @@ const SearchBar = (props) => {
     }, []);
 
     return(
-        <div className="d-inline-flex p-2">
+        <div className="d-inline-flex p-2" style={{height: '7.5vh'}}>
             <form onSubmit={onSubmit} className="d-inline-flex">
                 <div className="input-group mr-2" style={{width: window.innerWidth > 700 ? '28vw' : '100%'}}>
-                    <div class="input-group-prepend">
-                        <label class="input-group-text m-0">Address</label>
-                    </div>
-                    <input type="text" value={filters.address} onChange={onChange} name="address" className="form-control" placeholder="Los Angeles, CA"/>
+                    <input label="Address" type="text" value={filters.address} onChange={onChange} name="address" className="form-control" placeholder="Los Angeles, CA"/>
                     <div className="input-group-append">
                         <button onClick={onSubmit} className="btn btn-outline-primary" type="button">
                             {SearchIcon}
@@ -46,16 +41,16 @@ const SearchBar = (props) => {
                     </div>
                 </div>
             </form>
-            <div class="input-group" style={{width: "30%"}}>
-                <div class="input-group-prepend">
-                    <label class="input-group-text m-0">Radius</label>
-                </div>
+            <div className="input-group-sm" style={{maxWidth: '200px', position: 'relative'}}>
+                <span className="control-label text-muted" style={{fontSize: 12, position: 'absolute', top: -10, left: 0}}>Radius</span>
                 <input
                     className="form-control"
                     type="number"
                     name="radius"
                     onChange={onChange}
-                    value={filters.radius}/>
+                    value={filters.radius}
+                    style={{zIndex: 1, height: '90%', marginTop: 5 }}/>
+                <span className="text-muted units" style={{position: 'absolute', right: 10, top: 12, zIndex: 2}}>mi</span>
             </div>
         </div>
 

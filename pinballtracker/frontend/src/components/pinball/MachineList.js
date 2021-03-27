@@ -9,7 +9,7 @@ const MachineList = (props) => {
             {props.machines?.map(m => 
                 <div className="card border-success m-3 p-3 bg-light" key={m.id}>
                     <div className="d-flex">
-                        <h5 className="card-title text-success mr-auto">{m.name}</h5>
+                        <h5 className="card-title mr-auto">{m.name}</h5>
                         {props.isAuthenticated && props.isCustomLocation && (<ActionPopover machineId={m.id} delete={props.deleteMachine}/>)}
                     </div>
                     <ul className="list-group">
@@ -32,6 +32,13 @@ const MachineList = (props) => {
                             </li>
                         )}
                     </ul>
+                </div>
+            )}
+            {props.machines?.length == 0 && (
+                <div className="card border-success m-3 p-3 bg-light">
+                    <div className="d-flex">
+                        <h5 className="card-title mr-auto">No machines listed at this location</h5>
+                    </div>
                 </div>
             )}
         </Fragment>

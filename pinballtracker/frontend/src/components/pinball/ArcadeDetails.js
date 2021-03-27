@@ -45,7 +45,7 @@ const ArcadeDetails = (props) => {
 
     const details = props.arcadeDetails;
 
-    const isCustomLocation = props.arcadeDetails?.machines != null;
+    const isCustomLocation = props.arcadeDetails?.machine_names == null;
 
     const defaultStyle = {
         transition: `width .3s linear`,
