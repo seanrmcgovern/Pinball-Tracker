@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'; 
 import { getArcadesByAddress, openArcadeDetails } from  '../../actions/arcades';
+import { addBookmark, deleteBookmark } from '../../actions/bookmarks';
 import ReactMapboxGl, { Marker, ZoomControl, Popup } from 'react-mapbox-gl';
 import { GeolocateControl } from "mapbox-gl";
-import FavoriteIcon from './FavoriteIcon';
+import BookmarkIcon from './BookmarkIcon';
 
 const Map = ReactMapboxGl({
     accessToken:
@@ -60,6 +61,10 @@ const PinballMap = (props) => {
     const [popupLocation, setPopupLocation] = useState();
 
     const handleMarkerClick = (loc) => {
+        setPopupLocation({ ...loc, coordinates: {lat: loc.lat, lon: loc.lon}});
+    };
+
+    const handleFlipperClick = (loc) => {
         setPopupLocation(loc);
     };
 
@@ -104,7 +109,7 @@ const PinballMap = (props) => {
                     coordinates={[loc.coordinates.lon, loc.coordinates.lat]} 
                     anchor="bottom" 
                     key={loc.id} 
-                    onClick={() => handleMarkerClick(loc)}
+                    onClick={() => handleFlipperClick(loc)}
                     onMouseEnter={() => setHoveredMarker(loc.id)}
                     onMouseLeave={() => setHoveredMarker(null)}
                     style={{cursor: "pointer", position: "absolute", zIndex: hoveredMarker == loc.id || popupLocation?.id == loc.id ? 2: 1}}>
@@ -114,7 +119,7 @@ const PinballMap = (props) => {
             {popupLocation && (
                 <Popup
                     style={{width: "400px"}}
-                    coordinates={[popupLocation.lon || popupLocation.coordinates.lon, popupLocation.lat || popupLocation.coordinates.lat]}
+                    coordinates={[popupLocation.coordinates.lon, popupLocation.coordinates.lat]}
                     anchor="bottom"
                     offset={25}
                 >
@@ -122,7 +127,13 @@ const PinballMap = (props) => {
                         <div className="card-body pb-0">
                             <div className="d-flex">
                                 <h5 className="card-title text-primary m-0">{popupLocation.name}</h5>
-                                <FavoriteIcon/>
+                                <BookmarkIcon 
+                                    isAuthenticated={props.auth.isAuthenticated}
+                                    location={popupLocation}
+                                    bookmarkId={props.bookmarks.find(b => b.coordinates.lat == popupLocation.coordinates.lat && b.coordinates.lon == popupLocation.coordinates.lon)?.id}
+                                    isFavorite={props.bookmarks.some(b => b.coordinates.lat == popupLocation.coordinates.lat && b.coordinates.lon == popupLocation.coordinates.lon)}
+                                    addBookmark={props.addBookmark}
+                                    deleteBookmark={props.deleteBookmark}/>
                             </div>
                             <h5 className="card-text m-0"><small className="text-muted">{popupLocation.street}</small></h5>
                             <p className="lead text-dark m-1"><small>{popupLocation.description}</small></p>
@@ -140,7 +151,9 @@ const PinballMap = (props) => {
 
 const mapStateToProps = state => ({
     arcades: state.arcades.arcades,
-    locations: state.locations.locations
+    locations: state.locations.locations,
+    auth: state.auth,
+    bookmarks: state.bookmarks.bookmarks
 });
 
-export default connect(mapStateToProps, { getArcadesByAddress, openArcadeDetails })(PinballMap);
+export default connect(mapStateToProps, { getArcadesByAddress, openArcadeDetails, addBookmark, deleteBookmark })(PinballMap);

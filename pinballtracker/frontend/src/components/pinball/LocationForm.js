@@ -74,8 +74,8 @@ const LocationForm = (props) => {
                             onChange={onChange}
                             value={location.street}/>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group required col-md-6">
+                    <div className="form-row">
+                        <div className="form-group required col-md-6">
                             <label className="control-label m-0">City</label>
                             <input
                                 className="form-control form-control-sm"
@@ -84,7 +84,7 @@ const LocationForm = (props) => {
                                 onChange={onChange}
                                 value={location.city}/>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div className="form-group col-md-6">
                             <label className="m-0">State</label>
                             <select className="form-control form-control-sm" name="state" onChange={onChange}>
                                 {usStates.map(state => (
@@ -93,8 +93,8 @@ const LocationForm = (props) => {
                             </select>
                         </div>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group required col-md-6">
+                    <div className="form-row">
+                        <div className="form-group required col-md-6">
                             <label className="control-label m-0">Latitude</label>
                             <input
                                 className="form-control form-control-sm"
@@ -103,7 +103,7 @@ const LocationForm = (props) => {
                                 onChange={onChange}
                                 value={location.lat}/>
                         </div>
-                        <div class="form-group required col-md-6">
+                        <div className="form-group required col-md-6">
                             <label className="control-label m-0">Longitude</label>
                             <input
                                 className="form-control form-control-sm"
@@ -116,7 +116,7 @@ const LocationForm = (props) => {
                     <div className="form-group">
                         <label className="m-0">Description</label>
                         <textarea 
-                            class="form-control form-control-sm" 
+                            className="form-control form-control-sm" 
                             rows="3" 
                             name="description" 
                             onChange={onChange} 

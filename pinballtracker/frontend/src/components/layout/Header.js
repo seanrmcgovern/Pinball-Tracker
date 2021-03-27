@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth';
@@ -20,11 +20,11 @@ const Header = (props) => {
                     Locations
                 </Link>
             </li>
-            {/* <li className="nav-item mr-3">
+            <li className="nav-item mr-3">
                 <Link to="/profile" className="nav-link">
                     Profile
                 </Link>
-            </li> */}
+            </li>
             <span className="navbar-text mr-3">
                 <strong>
                     {user ? `Welcome ${user.username}` : ""}
@@ -58,14 +58,15 @@ const Header = (props) => {
         </ul>
     );
 
+    const [isCollapsed, setIsCollapsed] = useState(true);
+
     return(
         // navbar-light bg-light
-        <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
+        <nav className="navbar navbar-expand-sm navbar-dark bg-dark" style={{height: isCollapsed ? '7.5vh' : '100%'}}>
             <div className="container-fluid">
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <button onClick={() => setIsCollapsed(!isCollapsed)} className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                {/* <a className="navbar-brand nav-link" href="#">Pinball Tracker</a> */}
                 <Link to="/" className="nav-link navbar-brand">
                     Pinball Tracker
                 </Link>

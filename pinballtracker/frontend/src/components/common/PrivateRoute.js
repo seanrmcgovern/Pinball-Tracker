@@ -7,11 +7,17 @@ const PrivateRoute = ({ component: Component, auth, ...rest}) => (
         {...rest} 
         render={props => {
             if (auth.isLoading) {
-                return <h2>Loading...</h2>
-            } else if (!auth.isAuthenticated) {
-                return <Redirect to="/login" />
-            } else{
+                return (
+                    <div className="text-center d-flex justify-content-center mt-5">
+                        <div className="spinner-border text-success" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                )
+            } else if (auth.isAuthenticated) {
                 return <Component {...props} />
+            } else {
+                return <Redirect to="/login" />
             }
         }}
      />

@@ -3,7 +3,7 @@ import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOU
 const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
-    isLoading: false,
+    isLoading: true,
     user: null
 };
 
