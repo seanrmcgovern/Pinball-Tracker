@@ -29,7 +29,7 @@ const BookmarkIcon = (props) => {
 
     const bookmark = (e) => {
         e.stopPropagation();
-        props.addBookmark(props.location);
+        props.addBookmark({...props.location, description: props.location.description || "", website: props.location.website || ""});
     };
 
     const removeBookmark = (e) => {

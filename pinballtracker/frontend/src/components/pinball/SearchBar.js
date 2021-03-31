@@ -30,7 +30,7 @@ const SearchBar = (props) => {
     }, []);
 
     return(
-        <div className="d-inline-flex p-2" style={{height: '7.5vh'}}>
+        <div className="d-inline-flex p-2" style={{height: '7.5vh', minHeight: '60px'}}>
             <form onSubmit={onSubmit} className="d-inline-flex">
                 <div className="input-group mr-2" style={{width: window.innerWidth > 700 ? '28vw' : '100%'}}>
                     <input label="Address" type="text" value={filters.address} onChange={onChange} name="address" className="form-control" placeholder="Los Angeles, CA"/>
@@ -41,16 +41,14 @@ const SearchBar = (props) => {
                     </div>
                 </div>
             </form>
-            <div className="input-group-sm" style={{maxWidth: '200px', position: 'relative'}}>
-                <span className="control-label text-muted" style={{fontSize: 12, position: 'absolute', top: -10, left: 0}}>Radius</span>
-                <input
-                    className="form-control"
-                    type="number"
-                    name="radius"
-                    onChange={onChange}
-                    value={filters.radius}
-                    style={{zIndex: 1, height: '90%', marginTop: 5 }}/>
-                <span className="text-muted units" style={{position: 'absolute', right: 10, top: 12, zIndex: 2}}>mi</span>
+            <div className="input-group d-inline-flex" style={{maxWidth: '300px'}}>
+                <div className="input-group-prepend">
+                    <span className="input-group-text">Radius</span>
+                </div>
+                <input className="form-control radius-form-control" type="number" name="radius" onChange={onChange} value={filters.radius}/>
+                <div className="input-group-append">
+                    <span className="input-group-text">miles</span>
+                </div>
             </div>
         </div>
 

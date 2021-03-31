@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class Bookmark(models.Model):
     name = models.CharField(max_length=100)
     # will store the lat and lon in a dictionary, only allowing one location/arcade for each latlon
-    coordinates = models.JSONField(unique=True)
+    coordinates = models.JSONField()
     # machines will be a jsonfield with a machines key and an array of machine dicts/objects
     machines = models.JSONField(default=list)
     street = models.CharField(max_length=100)

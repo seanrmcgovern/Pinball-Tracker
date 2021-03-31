@@ -5,10 +5,10 @@ import { getLocationsByAddress, updateLocationDetails, getMachines } from '../..
 import { getBookmarks, addBookmark, deleteBookmark } from '../../actions/bookmarks';
 import { Transition } from 'react-transition-group'; 
 import { AppBar, Tab, Tabs, LinearProgress } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import ArcadeDetails from './ArcadeDetails';
 import TabContent from './TabContent';
 import Cards from './Cards';
-import { withStyles } from '@material-ui/core/styles';
 
 const ActivityIndicator = withStyles((theme) => ({
     colorPrimary: {
@@ -102,7 +102,8 @@ const Drawer = (props) => {
                                     isAuthenticated={props.auth.isAuthenticated}
                                     bookmarks={props.bookmarks}
                                     addBookmark={props.addBookmark} 
-                                    deleteBookmark={props.deleteBookmark}/>
+                                    deleteBookmark={props.deleteBookmark}
+                                    locationSearchActive={props.locationSearchActive}/>
                             </TabContent>
                             <TabContent value={props.tabValue} index={1}>
                                 <Cards 
