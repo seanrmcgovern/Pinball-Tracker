@@ -19,7 +19,7 @@ const Home = (props) => {
             <Parallax>
                 <div style={{ height: '50vh', display: "flex", textAlign: "center", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
                     <h1 className="display-4" style={{color: "#00B875"}}>Features thousands of crowdsourced locations</h1>
-                    <div class="d-flex justify-content-center">
+                    <div className="d-flex justify-content-center">
                         {!isAuthenticated && (
                             <Fragment>
                                 <Link to="/register">

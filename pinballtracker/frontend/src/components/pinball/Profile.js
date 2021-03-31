@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { getBookmarks } from '../../actions/bookmarks';
 import MachineList from './MachineList';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const Profile = (props) => {
 
@@ -54,6 +55,22 @@ const Profile = (props) => {
                 </ul>
                 <div className="col-sm"  style={{ height: "100%", overflowY: 'scroll'}}>
                     <MachineList machines={selectedBookmark?.machines} isAuthenticated={false}/>
+                    {!selectedBookmark && (
+                        <Fragment>
+                            <div style={{backgroundColor: "white", height: 300}}>
+                                <Skeleton height="60%" animation="wave"/>
+                                <Skeleton animation="wave"/>
+                                <Skeleton width="80%" animation="wave"/>
+                                <Skeleton width="80%" animation="wave"/>
+                            </div>
+                            <div style={{backgroundColor: "white", height: 300}}>
+                                <Skeleton height="60%" animation="wave"/>
+                                <Skeleton animation="wave"/>
+                                <Skeleton width="80%" animation="wave"/>
+                                <Skeleton width="80%" animation="wave"/>
+                            </div>
+                        </Fragment>
+                    )}
                 </div>
             </div>
         </Fragment>
