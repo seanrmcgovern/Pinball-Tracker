@@ -31,7 +31,7 @@ SECURE_SSL_REDIRECT = not DEBUG
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-ALLOWED_HOSTS = ['pinball-tracker.herokuapp.com']
+ALLOWED_HOSTS = ['.pinball-tracker.herokuapp.com']
 
 
 # Application definition
