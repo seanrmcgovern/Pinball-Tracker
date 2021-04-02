@@ -9,6 +9,7 @@ django-rest-knox = "*"
 gunicorn = "*"
 django-heroku = "*"
 Django = "*"
+python-decouple = "*"
 
 [dev-packages]
 pylint = "*"
