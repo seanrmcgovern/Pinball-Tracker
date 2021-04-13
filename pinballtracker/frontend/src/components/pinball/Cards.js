@@ -7,14 +7,14 @@ import { Transition } from 'react-transition-group';
 const Cards = (props) => {
 
     const defaultStyle = {
-        transition: "transform .3s ease-out",
+        transition: "opacity .3s ease-out",
     };
 
     const transitionStyles = {
-        entering: { transform: "scale(1)" },
-        entered: { transform: "scale(1)" },
-        exiting: { transform: "scale(0.5)" },
-        exited: { transform: "scale(0.5)" }
+        entering: { opacity: 1 },
+        entered: { opacity: 1 },
+        exiting: { opacity: 0 },
+        exited: { opacity: 0 }
     };
 
     const [hoveredCard, setHoveredCard] = useState();
@@ -33,7 +33,7 @@ const Cards = (props) => {
 
 
     return (
-        <div className="m-2 overflow-auto" style={{ width: rendered ? "100%" : 0, height: "75vh" , /* IE and Edge */ 'msOverflowStyle': "none", /* Firefox */ 'scrollbarWidth': "none"}}>
+        <div className="overflow-auto" style={{ width: rendered ? "100%" : 0, height: "75vh" }}>
             <Transition in={rendered} timeout={500}>
                 {state => (
                     <div 
