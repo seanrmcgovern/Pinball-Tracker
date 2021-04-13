@@ -58,6 +58,18 @@ const ArcadeDetails = (props) => {
         exited: { width: 0 }
     };
 
+    const [rendered, setRendered] = useState(props.isVisible);
+
+    useEffect(() => {
+        if (props.isVisible) {
+            setTimeout(() => {
+                setRendered(true);
+            }, 300)
+        } else {
+            setRendered(false);
+        }
+    }, [props.isVisible]);
+
     const [modifiedLocation, setModifiedLocation] = useState();
 
     const handleLocationChange = (e) => {
@@ -173,8 +185,8 @@ const ArcadeDetails = (props) => {
                         ...defaultStyle,
                         ...transitionStyles[state]
                     }}>
-                        {state == "entered" && details && (
-                            <div className="card">
+                        {state == "entered" && details && props.isVisible && (
+                            <div className="card" style={{opacity: rendered ? 1 : 0, transition: "opacity .3s ease-out" }}>
                                 <div className="card-header d-flex sticky-top" style={{opacity: 1, backgroundColor: "#F7F7F7"}}>
                                     <div className="mr-auto p-2">
                                         <h5 className="card-title text-primary align-self-center m-0 p-0 pt-2">{details.name}</h5>
