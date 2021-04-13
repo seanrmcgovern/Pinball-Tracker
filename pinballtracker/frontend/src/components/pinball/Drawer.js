@@ -81,7 +81,8 @@ const Drawer = (props) => {
                         updateLocationDetails={props.updateLocationDetails} 
                         isAuthenticated={props.auth.isAuthenticated}
                         machines={props.machines}
-                        />
+                        isVisible={props.isVisible}
+                    />
                     {!detailsOpen && (
                         <Fragment>
                             <AppBar position="sticky" color="default">
@@ -103,7 +104,8 @@ const Drawer = (props) => {
                                     bookmarks={props.bookmarks}
                                     addBookmark={props.addBookmark} 
                                     deleteBookmark={props.deleteBookmark}
-                                    locationSearchActive={props.locationSearchActive}/>
+                                    locationSearchActive={props.locationSearchActive}
+                                    isVisible={props.isVisible}/>
                             </TabContent>
                             <TabContent value={props.tabValue} index={1}>
                                 <Cards 
@@ -111,7 +113,8 @@ const Drawer = (props) => {
                                     isAuthenticated={props.auth.isAuthenticated}
                                     bookmarks={props.bookmarks}
                                     addBookmark={props.addBookmark} 
-                                    deleteBookmark={props.deleteBookmark}/>
+                                    deleteBookmark={props.deleteBookmark}
+                                    isVisible={props.isVisible}/>
                             </TabContent>
                         </Fragment>
                     )}
