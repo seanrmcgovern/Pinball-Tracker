@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth';
 import PropTypes from 'prop-types';
+import headerLogo from '../../images/headerLogo.png';
 
 const Header = (props) => {
 
@@ -66,8 +67,9 @@ const Header = (props) => {
                 <button onClick={() => setIsCollapsed(!isCollapsed)} className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <Link to="/" className="nav-link navbar-brand">
-                    Pinball Tracker
+                <Link to="/" className="nav-link navbar-brand" >
+                    <img src={headerLogo} style={{height: "40px", width: "40px", marginRight: 10}}/>
+                    <div style={{ display: "inline-block"}}>Pinball Tracker</div>
                 </Link>
                 <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
                     {isAuthenticated ? AuthLinks : GuestLinks}
