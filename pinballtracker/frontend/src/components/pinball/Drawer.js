@@ -93,13 +93,13 @@ const Drawer = (props) => {
                                     style={{color: "#00B875", boxShadow: `1px 1px 5px ${GREY}`}}
                                     TabIndicatorProps={{style: {background: "#00B875"}}}
                                 >
-                                    <Tab label="Curated Locations" style={{textTransform: "capitalize", fontFamily: `-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"`}}/>
-                                    <Tab label="Community Content" style={{textTransform: "capitalize", fontFamily: `-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"`}}/>
+                                    <Tab label="Curated Locations" style={{maxHeight: 50, textTransform: "capitalize", fontFamily: `-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"`}}/>
+                                    <Tab label="Community Content" style={{maxHeight: 50, textTransform: "capitalize", fontFamily: `-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"`}}/>
                                 </Tabs>
                             </AppBar>
                             <TabContent value={props.tabValue} index={0}>
                                 <Cards 
-                                    data={props.arcades.locations?.map(loc => ({...loc, coordinates: {lat: loc.lat, lon: loc.lon}, machines: loc.location_machine_xrefs}))} 
+                                    data={props.arcades?.map(loc => ({...loc, coordinates: {lat: loc.lat, lon: loc.lon}, machines: loc.location_machine_xrefs}))} 
                                     isAuthenticated={props.auth.isAuthenticated}
                                     bookmarks={props.bookmarks}
                                     addBookmark={props.addBookmark} 
@@ -128,7 +128,7 @@ const mapStateToProps = state => ({
     arcades: state.arcades.arcades,
     arcadeDetails: state.arcades.arcadeDetails,
     locations: state.locations.locations,
-    machines: state.locations.machines.machines,
+    machines: state.locations.machines,
     auth: state.auth,
     bookmarks: state.bookmarks.bookmarks
 });

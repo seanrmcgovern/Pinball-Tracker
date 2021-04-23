@@ -34,7 +34,7 @@ const PinballMap = (props) => {
     const [bounds, setBounds] = useState([[-120, 50], [-55, 20]]);
 
     useEffect(() => {
-        if (props.arcades?.locations?.length > 0) {
+        if (props.arcades?.length > 0) {
             // const average = arr => arr.reduce((sum, cur) => sum + cur, 0) / arr.length;
             // const lats = props.arcades.locations.map(m => parseFloat(m.lat));
             // const lons = props.arcades.locations.map(m => parseFloat(m.lon));
@@ -42,8 +42,8 @@ const PinballMap = (props) => {
             // const averageLat = average(lats);
             // setCenter([averageLon, averageLat]);
 
-            const lats = props.arcades.locations.map(m => parseFloat(m.lat));
-            const lons = props.arcades.locations.map(m => parseFloat(m.lon));
+            const lats = props.arcades.map(m => parseFloat(m.lat));
+            const lons = props.arcades.map(m => parseFloat(m.lon));
             // top left point
             const maxLat = lats.reduce((a, b) => Math.max(a, b)) + 0.1; // Math.max(...lats);
             const minLon = lons.reduce((a, b) => Math.min(a, b)); // Math.min(...lons);
@@ -92,7 +92,7 @@ const PinballMap = (props) => {
             >
             <button className="btn rounded-left shadow" style={{position: "absolute", top: 5, left: -5, backgroundColor: "#F5F9F9", opacity: 0.75, borderWidth: 1, borderColor: "#00B875"}} onClick={onPress}>{props.isVisible ? CaretLeft : CaretRight}</button>
             <ZoomControl style={{marginTop: 40}}/>
-            {props.tabValue == 0 && props.arcades?.locations?.map(loc => (
+            {props.tabValue == 0 && props.arcades?.map(loc => (
                 <Marker 
                     coordinates={[loc.lon, loc.lat]} 
                     anchor="bottom" 

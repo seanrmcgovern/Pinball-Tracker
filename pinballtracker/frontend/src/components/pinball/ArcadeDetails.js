@@ -154,16 +154,18 @@ const ArcadeDetails = (props) => {
 
     const saveMachine = (e) => {
         e.preventDefault();
-        const coors = {lat: modifiedLocation.lat, lon: modifiedLocation.lon};
-        // update the locations "machines" field to append the new machine
-        const updatedMachine = {id: selectedMachine.id, name: selectedMachine.name, year: selectedMachine.year, manufacturer: selectedMachine.manufacturer, ipdb_link: selectedMachine.ipdb_link, created_at: new Date() };
-        const updatedLocation = { ...modifiedLocation, machines: [...modifiedLocation.machines, updatedMachine], coordinates: coors};
-        props.updateLocationDetails(updatedLocation).then((res) => {
-            if (res.status == 200) {
-                props.updateDetails(updatedLocation);
-            }
-        });
-        toggleMachineInputs();
+        if (selectedMachine != null && selectedMachine.name != null) {
+            const coors = {lat: modifiedLocation.lat, lon: modifiedLocation.lon};
+            // update the locations "machines" field to append the new machine
+            const updatedMachine = {id: selectedMachine.id, name: selectedMachine.name, year: selectedMachine.year, manufacturer: selectedMachine.manufacturer, ipdb_link: selectedMachine.ipdb_link, created_at: new Date() };
+            const updatedLocation = { ...modifiedLocation, machines: [...modifiedLocation.machines, updatedMachine], coordinates: coors};
+            props.updateLocationDetails(updatedLocation).then((res) => {
+                if (res.status == 200) {
+                    props.updateDetails(updatedLocation);
+                }
+            });
+            toggleMachineInputs();
+        }
     };
 
     const deleteMachine = (id) => {
@@ -326,16 +328,19 @@ const ArcadeDetails = (props) => {
                                                             <Autocomplete
                                                                 value={selectedMachine}
                                                                 onChange={(event, newValue) => {
-                                                                    setSelectedMachine(newValue);
+                                                                    if (newValue && newValue.name) {
+                                                                        setSelectedMachine(newValue);
+                                                                    }
                                                                 }}
                                                                 classes={classes}
                                                                 freeSolo
                                                                 options={props.machines}
-                                                                getOptionLabel={(option) => option.name}
+                                                                getOptionLabel={(option) => option.name || ""}
+                                                                clearOnEscape={true}
                                                                 style={{ width: 300 }}
                                                                 renderInput={(params) => <TextField {...params} label="New Machine" variant="outlined" InputLabelProps={{className: inputLabelClasses.label}} />}
                                                             />
-                                                            <button disabled={selectedMachine == null} type="submit" className="btn btn-primary m-1">Submit</button>
+                                                            <button disabled={selectedMachine == null || !selectedMachine.name} type="submit" className="btn btn-primary m-1">Submit</button>
                                                             <button onClick={toggleMachineInputs} type="reset" className="btn btn-secondary m-1">Cancel</button>
                                                         </div>
                                                     </form>

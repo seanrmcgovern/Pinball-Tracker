@@ -114,13 +114,14 @@ const LocationForm = (props) => {
                         </div>
                     </div>
                     <div className="form-group">
-                        <label className="m-0">Description</label>
+                        <label className="m-0">Description <small>(200 character limit)</small></label>
                         <textarea 
                             className="form-control form-control-sm" 
                             rows="3" 
                             name="description" 
                             onChange={onChange} 
-                            value={location.description}>
+                            value={location.description}
+                            maxLength={200}>
                         </textarea>
                     </div>
                     <div className="form-group">

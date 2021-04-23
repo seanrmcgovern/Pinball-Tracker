@@ -10,9 +10,12 @@ export const getArcadesByAddress = (address, maxDist) => (dispatch) =>
         axios.get(`https://pinballmap.com/api/v1/locations/closest_by_address.json?address=${address}&max_distance=${maxDist}&send_all_within_distance=true`)
             .then(res => {
                 // dispatch GET_ARCADES_BY_ADDRESS action to reducer
+                const arcades = res.data.locations.sort((a, b) => {
+                    return a.name.toLowerCase() <= b.name.toLowerCase() ? -1 : 1;
+                });
                 dispatch({
                     type: GET_ARCADES_BY_ADDRESS,
-                    payload: res.data
+                    payload: arcades
                 });
                 resolve(res);
             }).catch(err => {

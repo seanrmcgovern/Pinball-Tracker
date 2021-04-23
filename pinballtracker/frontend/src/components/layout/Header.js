@@ -12,17 +12,17 @@ const Header = (props) => {
     const AuthLinks = (
         <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
             <li className="nav-item">
-                <Link to="/explore" className="nav-link">
+                <Link to="/explore" className="nav-link nav-link-hover">
                     Explore
                 </Link>
             </li>
             <li className="nav-item">
-                <Link to="/locations" className="nav-link">
+                <Link to="/locations" className="nav-link nav-link-hover">
                     Locations
                 </Link>
             </li>
             <li className="nav-item mr-3">
-                <Link to="/profile" className="nav-link">
+                <Link to="/profile" className="nav-link nav-link-hover">
                     Profile
                 </Link>
             </li>
@@ -42,17 +42,17 @@ const Header = (props) => {
     const GuestLinks = (
         <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
             <li className="nav-item">
-                <Link to="/explore" className="nav-link">
+                <Link to="/explore" className="nav-link nav-link-hover">
                     Explore
                 </Link>
             </li>
             <li className="nav-item">
-                <Link to="/register" className="nav-link">
+                <Link to="/register" className="nav-link nav-link-hover">
                     Register
                 </Link>
             </li>
             <li className="nav-item">
-                <Link to="/login" className="nav-link">
+                <Link to="/login" className="nav-link nav-link-hover">
                     Login
                 </Link>
             </li>
@@ -67,7 +67,7 @@ const Header = (props) => {
                 <button onClick={() => setIsCollapsed(!isCollapsed)} className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <Link to="/" className="nav-link navbar-brand" >
+                <Link to="/" className="nav-link navbar-brand" style={{paddingLeft: 0}}>
                     <img src={headerLogo} style={{height: "40px", width: "40px", marginRight: 10}}/>
                     <div style={{ display: "inline-block"}}>Pinball Tracker</div>
                 </Link>

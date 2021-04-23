@@ -4,9 +4,11 @@ import ActionPopover from './ActionPopover';
 
 const MachineList = (props) => {
 
+    const machines = props.machines ? props.machines.sort((a, b) => a.name.toLowerCase() <= b.name.toLowerCase() ? -1 : 0) : [];
+
     return(
         <Fragment>
-            {props.machines?.map(m => 
+            {machines.map(m => 
                 <div className="card border-success m-3 p-3 bg-light" key={m.id}>
                     <div className="d-flex">
                         <h5 className="card-title mr-auto">{m.name}</h5>
@@ -34,7 +36,7 @@ const MachineList = (props) => {
                     </ul>
                 </div>
             )}
-            {props.machines?.length == 0 && (
+            {machines.length == 0 && props.isCustomLocation != null && (
                 <div className="card border-success m-3 p-3 bg-light">
                     <div className="d-flex">
                         <h5 className="card-title mr-auto">No machines listed at this location</h5>
