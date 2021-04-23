@@ -4,7 +4,6 @@ import { GET_LOCATIONS_BY_ADDRESS, ADD_LOCATION, UPDATE_LOCATION_DETAILS, GET_MA
 import { tokenConfig } from "./auth";
 
 // Pinball machine locations based off of community submissions
-// Get community locations based on address
 
 // for now just get all locations, later change to limit by default 25 mile radius, or maxDist
 export const getLocationsByAddress = (address) => (dispatch, getState) => 
@@ -12,9 +11,12 @@ export const getLocationsByAddress = (address) => (dispatch, getState) =>
         axios.get('/api/locations/', tokenConfig(getState))
             .then(res => {
                 // dispatch GET_LOCATIONS_BY_ADDRESS action to reducer
+                const locations = res.data.sort((a, b) => {
+                    return a.name.toLowerCase() <= b.name.toLowerCase() ? -1 : 1;
+                });
                 dispatch({
                     type: GET_LOCATIONS_BY_ADDRESS,
-                    payload: res.data
+                    payload: locations
                 });
                 resolve(res);
             }).catch(err => {
@@ -62,9 +64,12 @@ export const updateLocationDetails = (location) => (dispatch, getState) =>
 
 export const getMachines = () => (dispatch) => {
     axios.get("https://pinballmap.com/api/v1/machines.json").then((res) => {
+        const machines = res.data.machines.sort((a, b) => {
+            return a.name.toLowerCase() <= b.name.toLowerCase() ? -1 : 1;
+        });
         dispatch({
             type: GET_MACHINES,
-            payload: res.data
+            payload: machines
         });
     }).catch(err => {
         dispatch(returnErrors(err.response.data, err.response.status));

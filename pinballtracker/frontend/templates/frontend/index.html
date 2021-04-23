@@ -12,7 +12,7 @@
         .btn:focus, .btn:active:focus, .btn.active:focus {
             box-shadow: none !important;
         }
-        .nav-link::after{
+        .nav-link-hover::after{
             content: '';
             display: block;
             width: 0;
@@ -21,7 +21,7 @@
             transition: width .5s;
         }
 
-        .nav-link:hover::after{
+        .nav-link-hover:hover::after{
             width: 100%;
             transition: width .5s;
         }
@@ -46,6 +46,9 @@
         /* Firefox */
         input[type=number] {
             -moz-appearance: textfield;
+        }
+        .mapboxgl-ctrl-attrib-button {
+            display: none;
         }
         </style>
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css" rel="stylesheet"/>
