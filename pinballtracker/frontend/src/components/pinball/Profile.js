@@ -30,8 +30,8 @@ const Profile = (props) => {
                     <h4>{selectedBookmark ? `Machines for: ${selectedBookmark.name}`: `Select a bookmark to view machines`}</h4>
                 </div>
             </div>
-            <div className="row m-4 pb-0" style={{height: '75vh'}}>
-                <ul className="mx-auto list-group list-group-flush col-sm rounded border border-success p-0" style={{ height: "100%", overflowY: 'scroll'}}>
+            <div className="row m-4 pb-0" style={{height: 'calc(100vh - 105px)'}}>
+                <ul className="mx-auto list-group list-group-flush col-sm rounded border border-success p-0" style={{height: "100%", overflowY: 'scroll'}}>
                         {props.bookmarks?.map(bookmark => (
                             <li onClick={() => handleListItem(bookmark)} className={`list-group-item list-group-item-action ${selectedBookmark?.id == bookmark.id && "list-group-item-success"}`} style={{cursor: "pointer"}} key={bookmark.id}>
                                 <div className="d-flex w-100 justify-content-between">
@@ -53,7 +53,7 @@ const Profile = (props) => {
                             </li>
                         )}
                 </ul>
-                <div className="col-sm"  style={{ height: "100%", overflowY: 'scroll'}}>
+                <div className="col-sm" style={{height: '100%', overflowY: 'scroll'}}>
                     <MachineList machines={selectedBookmark?.machines} isAuthenticated={false}/>
                     {!selectedBookmark && (
                         <Fragment>

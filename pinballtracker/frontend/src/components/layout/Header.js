@@ -62,7 +62,7 @@ const Header = (props) => {
     const [isCollapsed, setIsCollapsed] = useState(true);
 
     return(
-        <nav className="navbar navbar-expand-sm navbar-dark bg-dark" style={{height: isCollapsed ? '7.5vh' : '100%', minHeight: '50px'}}>
+        <nav className="navbar navbar-expand-sm navbar-dark bg-dark" style={{height: isCollapsed ? "75px" : "100%"}}>
             <div className="container-fluid">
                 <button onClick={() => setIsCollapsed(!isCollapsed)} className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>

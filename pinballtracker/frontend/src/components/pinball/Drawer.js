@@ -28,7 +28,7 @@ const Drawer = (props) => {
 
     const defaultStyle = {
         transition: `width .3s linear`,
-        height: '85vh',
+        height: 'calc(100vh - 135px)',
         backgroundColor: "#F5F9F9",
         boxShadow: `1px 1px 5px ${GREY}`,
     };

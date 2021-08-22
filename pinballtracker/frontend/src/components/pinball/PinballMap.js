@@ -83,7 +83,7 @@ const PinballMap = (props) => {
             // style="mapbox://styles/mapbox/streets-v9"
             style="mapbox://styles/mapbox/light-v9"
             containerStyle={{
-                height: '85vh',
+                height: 'calc(100vh - 135px)',
                 width: '100%',
                 flex: 1,
             }}

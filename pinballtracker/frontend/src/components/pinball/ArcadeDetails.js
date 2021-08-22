@@ -238,7 +238,7 @@ const ArcadeDetails = (props) => {
                                         </button>
                                     </div>
                                 </div>
-                                <div style={{overflow: "auto", height: "75vh"}} ref={detailsRef}>
+                                <div style={{overflow: "auto", height: "calc(100vh - 230px)"}} ref={detailsRef}>
                                     {props.isAuthenticated && (
                                         <Fragment>
                                             <div className="collapse" id="collapseInputs">

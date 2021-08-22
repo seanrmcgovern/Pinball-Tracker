@@ -7,7 +7,7 @@ const MachineList = (props) => {
     const machines = props.machines ? props.machines.sort((a, b) => a.name.toLowerCase() <= b.name.toLowerCase() ? -1 : 0) : [];
 
     return(
-        <Fragment>
+        <div>
             {machines.map(m => 
                 <div className="card border-success m-3 p-3 bg-light" key={m.id}>
                     <div className="d-flex">
@@ -43,7 +43,7 @@ const MachineList = (props) => {
                     </div>
                 </div>
             )}
-        </Fragment>
+        </div>
     );
 };
 

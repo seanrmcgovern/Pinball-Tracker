@@ -33,7 +33,7 @@ const Cards = (props) => {
 
 
     return (
-        <div className="overflow-auto" style={{ width: rendered ? "100%" : 0, height: "75vh" }}>
+        <div className="overflow-auto" style={{ width: rendered ? "100%" : 0, height: "calc(100vh - 185px)" }}>
             <Transition in={rendered} timeout={500}>
                 {state => (
                     <div 

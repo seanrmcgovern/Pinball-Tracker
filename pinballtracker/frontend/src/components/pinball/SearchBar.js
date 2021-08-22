@@ -30,7 +30,7 @@ const SearchBar = (props) => {
     }, []);
 
     return(
-        <div className="d-inline-flex p-2" style={{height: '7.5vh', minHeight: '60px'}}>
+        <div className="d-inline-flex p-2" style={{height: "60px"}}>
             <form onSubmit={onSubmit} className="d-inline-flex">
                 <div className="input-group mr-2" style={{width: window.innerWidth > 700 ? '28vw' : '100%', minWidth: '200px'}}>
                     <input label="Address" type="text" value={filters.address} onChange={onChange} name="address" className="form-control custom-form-control" placeholder="Los Angeles, CA"/>
